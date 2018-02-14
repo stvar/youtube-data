@@ -1,0 +1,1004 @@
+{
+    "type": "dict",
+    "args": [
+        {
+            "name": "kind",
+            "type": {
+                "plain": "youtube#videoListResponse"
+            }
+        },
+        {
+            "name": "etag",
+            "type": "string"
+        },
+        {
+            "name": "nextPageToken",
+            "type": "string"
+        },
+        {
+            "name": "prevPageToken",
+            "type": "string"
+        },
+        {
+            "name": "pageInfo",
+            "type": {
+                "type": "dict",
+                "args": [
+                    {
+                        "name": "totalResults",
+                        "type": "number"
+                    },
+                    {
+                        "name": "resultsPerPage",
+                        "type": "number"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "items",
+            "type": {
+                "type": "array",
+                "args": {
+                    "type": "dict",
+                    "args": [
+                        {
+                            "name": "kind",
+                            "type": {
+                                "plain": "youtube#video"
+                            }
+                        },
+                        {
+                            "name": "etag",
+                            "type": "string"
+                        },
+                        {
+                            "name": "id",
+                            "type": "string"
+                        },
+                        {
+                            "name": "snippet",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "publishedAt",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "channelId",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "title",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "description",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "thumbnails",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "default",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "name": "medium",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "name": "high",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "name": "standard",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "name": "maxres",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "channelTitle",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "tags",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "categoryId",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "liveBroadcastContent",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "defaultLanguage",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "localized",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "title",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "description",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "defaultAudioLanguage",
+                                        "type": "string"
+                                    }
+                                ],
+                                "expr": "channelId|publishedAt|title|description"
+                            }
+                        },
+                        {
+                            "name": "contentDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "duration",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "dimension",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "definition",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "caption",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "licensedContent",
+                                        "type": "boolean"
+                                    },
+                                    {
+                                        "name": "regionRestriction",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "allowed",
+                                                    "type": {
+                                                        "type": "array",
+                                                        "args": "string"
+                                                    }
+                                                },
+                                                {
+                                                    "name": "blocked",
+                                                    "type": {
+                                                        "type": "array",
+                                                        "args": "string"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "contentRating",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "acbRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "agcomRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "anatelRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bbfcRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bfvcRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bmukkRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "catvRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "catvfrRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "cbfcRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "cccRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "cceRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "chfilmRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "chvrsRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "cicfRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "cnaRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "cncRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "csaRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "cscfRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "czfilmRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "djctqRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "djctqRatingReasons",
+                                                    "type": {
+                                                        "type": "array",
+                                                        "args": "string"
+                                                    }
+                                                },
+                                                {
+                                                    "name": "ecbmctRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "eefilmRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "egfilmRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "eirinRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "fcbmRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "fcoRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "fmocRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "fpbRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "fpbRatingReasons",
+                                                    "type": {
+                                                        "type": "array",
+                                                        "args": "string"
+                                                    }
+                                                },
+                                                {
+                                                    "name": "fskRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "grfilmRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "icaaRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "ifcoRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "ilfilmRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "incaaRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "kfcbRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "kijkwijzerRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "kmrbRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "lsfRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "mccaaRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "mccypRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "mcstRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "mdaRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "medietilsynetRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "mekuRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "mibacRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "mocRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "moctwRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "mpaaRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "mpaatRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "mtrcbRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "nbcRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "nbcplRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "nfrcRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "nfvcbRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "nkclvRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "oflcRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "pefilmRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "rcnofRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "resorteviolenciaRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "rtcRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "rteRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "russiaRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "skfilmRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "smaisRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "smsaRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "tvpgRating",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "ytRating",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "projection",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "hasCustomThumbnail",
+                                        "type": "boolean"
+                                    }
+                                ],
+                                "expr": "duration"
+                            }
+                        },
+                        {
+                            "name": "status",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "uploadStatus",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "failureReason",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "rejectionReason",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "privacyStatus",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "publishAt",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "license",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "embeddable",
+                                        "type": "boolean"
+                                    },
+                                    {
+                                        "name": "publicStatsViewable",
+                                        "type": "boolean"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "statistics",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "viewCount",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "likeCount",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "dislikeCount",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "favoriteCount",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "commentCount",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "player",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "embedHtml",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "embedHeight",
+                                        "type": {
+                                            "plain": "$long"
+                                        }
+                                    },
+                                    {
+                                        "name": "embedWidth",
+                                        "type": {
+                                            "plain": "$long"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "topicDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "topicIds",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "relevantTopicIds",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "topicCategories",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "recordingDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "locationDescription",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "location",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "latitude",
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "name": "longitude",
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "name": "altitude",
+                                                    "type": "number"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "recordingDate",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "fileDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "fileName",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "fileSize",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "fileType",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "container",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "videoStreams",
+                                        "type": {
+                                            "type": "array",
+                                            "args": {
+                                                "type": "dict",
+                                                "args": [
+                                                    {
+                                                        "name": "widthPixels",
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "name": "heightPixels",
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "name": "frameRateFps",
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "name": "aspectRatio",
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "name": "codec",
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "name": "bitrateBps",
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "name": "rotation",
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "name": "vendor",
+                                                        "type": "string"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "audioStreams",
+                                        "type": {
+                                            "type": "array",
+                                            "args": {
+                                                "type": "dict",
+                                                "args": [
+                                                    {
+                                                        "name": "channelCount",
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "name": "codec",
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "name": "bitrateBps",
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "name": "vendor",
+                                                        "type": "string"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "durationMs",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "bitrateBps",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "creationTime",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "processingDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "processingStatus",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "processingProgress",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "partsTotal",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "partsProcessed",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "timeLeftMs",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "processingFailureReason",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "fileDetailsAvailability",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "processingIssuesAvailability",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "tagSuggestionsAvailability",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "editorSuggestionsAvailability",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "thumbnailsAvailability",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "suggestions",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "processingErrors",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "processingWarnings",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "processingHints",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "tagSuggestions",
+                                        "type": {
+                                            "type": "array",
+                                            "args": {
+                                                "type": "dict",
+                                                "args": [
+                                                    {
+                                                        "name": "tag",
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "name": "categoryRestricts",
+                                                        "type": {
+                                                            "type": "array",
+                                                            "args": "string"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "editorSuggestions",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "liveStreamingDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "actualStartTime",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "actualEndTime",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "scheduledStartTime",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "scheduledEndTime",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "concurrentViewers",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "activeLiveChatId",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "localizations",
+                            "type": "object"
+                        }
+                    ],
+                    "expr": "snippet|contentDetails"
+                }
+            }
+        }
+    ],
+    "expr": "~nextPageToken ~prevPageToken"
+}

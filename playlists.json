@@ -1,0 +1,270 @@
+{
+    "type": "dict",
+    "args": [
+        {
+            "name": "kind",
+            "type": {
+                "plain": "youtube#playlistListResponse"
+            }
+        },
+        {
+            "name": "etag",
+            "type": "string"
+        },
+        {
+            "name": "nextPageToken",
+            "type": "string"
+        },
+        {
+            "name": "prevPageToken",
+            "type": "string"
+        },
+        {
+            "name": "pageInfo",
+            "type": {
+                "type": "dict",
+                "args": [
+                    {
+                        "name": "totalResults",
+                        "type": "number"
+                    },
+                    {
+                        "name": "resultsPerPage",
+                        "type": "number"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "items",
+            "type": {
+                "type": "array",
+                "args": {
+                    "type": "dict",
+                    "args": [
+                        {
+                            "name": "kind",
+                            "type": {
+                                "plain": "youtube#playlist"
+                            }
+                        },
+                        {
+                            "name": "etag",
+                            "type": "string"
+                        },
+                        {
+                            "name": "id",
+                            "type": "string"
+                        },
+                        {
+                            "name": "snippet",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "publishedAt",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "channelId",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "title",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "description",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "thumbnails",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "default",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "name": "medium",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "name": "high",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "name": "standard",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "name": "maxres",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "channelTitle",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "tags",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "defaultLanguage",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "localized",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "title",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "description",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "expr": "channelId|publishedAt|title|description"
+                            }
+                        },
+                        {
+                            "name": "status",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "privacyStatus",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "contentDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "itemCount",
+                                        "type": "number"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "player",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "embedHtml",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "localizations",
+                            "type": "object"
+                        }
+                    ],
+                    "expr": "snippet"
+                }
+            }
+        }
+    ],
+    "expr": "~nextPageToken ~prevPageToken"
+}

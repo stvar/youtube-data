@@ -1,0 +1,634 @@
+{
+    "type": "dict",
+    "args": [
+        {
+            "name": "kind",
+            "type": {
+                "plain": "youtube#channelListResponse"
+            }
+        },
+        {
+            "name": "etag",
+            "type": "string"
+        },
+        {
+            "name": "nextPageToken",
+            "type": "string"
+        },
+        {
+            "name": "prevPageToken",
+            "type": "string"
+        },
+        {
+            "name": "pageInfo",
+            "type": {
+                "type": "dict",
+                "args": [
+                    {
+                        "name": "totalResults",
+                        "type": "number"
+                    },
+                    {
+                        "name": "resultsPerPage",
+                        "type": "number"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "items",
+            "type": {
+                "type": "array",
+                "args": {
+                    "type": "dict",
+                    "args": [
+                        {
+                            "name": "kind",
+                            "type": {
+                                "plain": "youtube#channel"
+                            }
+                        },
+                        {
+                            "name": "etag",
+                            "type": "string"
+                        },
+                        {
+                            "name": "id",
+                            "type": "string"
+                        },
+                        {
+                            "name": "snippet",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "title",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "description",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "customUrl",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "publishedAt",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "thumbnails",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "default",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "name": "medium",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "name": "high",
+                                                    "type": {
+                                                        "type": "dict",
+                                                        "args": [
+                                                            {
+                                                                "name": "url",
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "name": "width",
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "name": "height",
+                                                                "type": "number"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "defaultLanguage",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "localized",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "title",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "description",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "country",
+                                        "type": "string"
+                                    }
+                                ],
+                                "expr": "publishedAt|title|description"
+                            }
+                        },
+                        {
+                            "name": "contentDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "relatedPlaylists",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "likes",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "favorites",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "uploads",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "watchHistory",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "watchLater",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "statistics",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "viewCount",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "commentCount",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "subscriberCount",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "hiddenSubscriberCount",
+                                        "type": "boolean"
+                                    },
+                                    {
+                                        "name": "videoCount",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "topicDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "topicIds",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "topicCategories",
+                                        "type": {
+                                            "type": "array",
+                                            "args": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "status",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "privacyStatus",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "isLinked",
+                                        "type": "boolean"
+                                    },
+                                    {
+                                        "name": "longUploadsStatus",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "brandingSettings",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "channel",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "title",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "description",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "keywords",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "defaultTab",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "trackingAnalyticsAccountId",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "moderateComments",
+                                                    "type": "boolean"
+                                                },
+                                                {
+                                                    "name": "showRelatedChannels",
+                                                    "type": "boolean"
+                                                },
+                                                {
+                                                    "name": "showBrowseView",
+                                                    "type": "boolean"
+                                                },
+                                                {
+                                                    "name": "featuredChannelsTitle",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "featuredChannelsUrls",
+                                                    "type": {
+                                                        "type": "array",
+                                                        "args": "string"
+                                                    }
+                                                },
+                                                {
+                                                    "name": "unsubscribedTrailer",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "profileColor",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "defaultLanguage",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "country",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "watch",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "textColor",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "backgroundColor",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "featuredPlaylistId",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "image",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "bannerImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerMobileImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "watchIconImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "trackingImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerTabletLowImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerTabletImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerTabletHdImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerTabletExtraHdImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerMobileLowImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerMobileMediumHdImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerMobileHdImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerMobileExtraHdImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerTvImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerTvLowImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerTvMediumImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerTvHighImageUrl",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "bannerExternalUrl",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "hints",
+                                        "type": {
+                                            "type": "array",
+                                            "args": {
+                                                "type": "dict",
+                                                "args": [
+                                                    {
+                                                        "name": "property",
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "name": "value",
+                                                        "type": "string"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "invideoPromotion",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "defaultTiming",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "type",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "offsetMs",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "durationMs",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "position",
+                                        "type": {
+                                            "type": "dict",
+                                            "args": [
+                                                {
+                                                    "name": "type",
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "cornerPosition",
+                                                    "type": "string"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "items",
+                                        "type": {
+                                            "type": "array",
+                                            "args": {
+                                                "type": "dict",
+                                                "args": [
+                                                    {
+                                                        "name": "id",
+                                                        "type": {
+                                                            "type": "dict",
+                                                            "args": [
+                                                                {
+                                                                    "name": "type",
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "name": "videoId",
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "name": "websiteUrl",
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "name": "recentlyUploadedBy",
+                                                                    "type": "string"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "timing",
+                                                        "type": {
+                                                            "type": "dict",
+                                                            "args": [
+                                                                {
+                                                                    "name": "type",
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "name": "offsetMs",
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "name": "durationMs",
+                                                                    "type": "string"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "customMessage",
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "name": "promotedByContentOwner",
+                                                        "type": "boolean"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "useSmartTiming",
+                                        "type": "boolean"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "auditDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "overallGoodStanding",
+                                        "type": "boolean"
+                                    },
+                                    {
+                                        "name": "communityGuidelinesGoodStanding",
+                                        "type": "boolean"
+                                    },
+                                    {
+                                        "name": "copyrightStrikesGoodStanding",
+                                        "type": "boolean"
+                                    },
+                                    {
+                                        "name": "contentIdClaimsGoodStanding",
+                                        "type": "boolean"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "contentOwnerDetails",
+                            "type": {
+                                "type": "dict",
+                                "args": [
+                                    {
+                                        "name": "contentOwner",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "timeLinked",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "localizations",
+                            "type": "object"
+                        }
+                    ],
+                    "expr": "snippet"
+                }
+            }
+        }
+    ],
+    "expr": "~nextPageToken ~prevPageToken"
+}

@@ -1,0 +1,699 @@
+
+                                  Youtube-Data
+                                  ~~~~~~~~~~~~
+                        Stefan Vargyas, stvar@yahoo.com
+
+                                  Jan 18, 2018
+
+
+Table of Contents
+-----------------
+
+0. Copyright
+1. The Youtube-Data Program
+2. Prerequisites of Youtube-Data
+3. Use Cases of Youtube-Data
+4. Appendix: Building Json-Type and 'youtube-data.so'
+5. Appendix: Using Shell Function 'youtube-data'
+6. References
+
+
+0. Copyright
+============
+
+This program is GPL-licensed free software. Its author is Stefan Vargyas. You
+can redistribute it and/or modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+You should have received a copy of the GNU General Public License along with
+this program (look up for the file COPYING in the top directory of the source
+tree). If not, see http://gnu.org/licenses/gpl.html.
+
+Additional note: the files '*.json' in the top directory of the source tree
+are subject to the same copyright and license provisions as the rest of the
+Youtube-Data is.
+
+
+1. The Youtube-Data Program
+===========================
+
+Youtube-Data program's vocation is that of an elaborated reader of the data
+associated to video content published by YouTube web site. As is well-known,
+YouTube structures its public data around the so-called *resources* -- the
+most preeminent: channels, playlists and videos -- and *content* attached
+to resources.
+
+Youtube-Data is querying the Google's API [2] from the 'bash' command line
+prompt for the content associated to each of the above three categories of
+resources and it is displaying the resulting data as formatted UTF8 text on
+standard output.
+
+Youtube-Data is using an own timestamping cache mechanism to minimize the
+number of actual calls made to the remote service. Consequently, the user
+is free to process locally the data received from the remote party the way
+needed, without worrying that he might exceed the quota limits allocated.
+
+There is a feature of Youtube-Data that makes this program stand out compared
+to others like it (e.g. in contrast with YouTube's own web site): through its
+caching mechanism, Youtube-Data is able to produce diffs between old and new
+content associated to each resource published.
+
+For example, when one has a list of favorite channels, he may very easily
+check each of these channels for to see whether new video materials have
+been published until the last time queried (see below section 3, Use Cases
+of Youtube-Data, for a couple of relevant 'youtube-data' command lines).
+
+Youtube-Data consists of a quite involved 'bash' shell script 'youtube-data.sh',
+which exports, upon being sourced at the command line prompt, its main function
+'youtube-data' -- along with a few auxiliary ones.
+
+
+2. Prerequisites of Youtube-Data
+================================
+
+The first prerequisite of using the shell script 'youtube-data.sh' is that of
+obtaining a so called *YouTube Data API key* from Google [1]. Upon achieving
+that, edit the shell script file 'youtube-data.sh' for to assign the obtained
+string value to the environment variable '$YOUTUBE_DATA_APP_KEY'.
+
+The second prerequisite is also about editing 'youtube-data.sh': one must set
+a proper value for '$YOUTUBE_DATA_HOME'. The value assigned to this environment
+variable must point to the top directory of Youtube-Data's source tree.
+
+Note that if one does not want to touch the file 'youtube-data.sh' for to assign
+own values to the two environment variables above, then he may instead do these
+assignments for example in user's own '~/.bashrc' file. 
+
+A more involved prerequisite of Youtube-Data refers to the third-party programs
+required for the well-functioning of the shell functions in 'youtube-data.sh' --
+specifically that of its main one, 'youtube-data.sh'. The 'bash' shell script
+'youtube-data.sh' makes use of the following programs:
+
+  -----------------------------------------------
+               GNU/Linux Power Tools
+  -----------------------------------------------
+   GNU awk 3.1.8
+   GNU bash 3.2.51
+   GNU coreutils 8.12 (cat, cut, date, mktemp,
+     rm, sort, tee, tr, truncate, uniq)
+   GNU diffutils 2.8.7 (diff)
+   GNU grep 2.7
+   GNU wdiff 1.2.1
+   GNU wget 1.11.4
+   super-sed 3.62 (ssed)
+  -----------------------------------------------
+                Free Software Tools
+  -----------------------------------------------
+   Cache-DB 0.2 (cache)
+   Json-Type 0.11.0 (json 0.8.8, json.so 0.11.0)
+  -----------------------------------------------
+
+The version numbers above indicate which packages and, by case, binaries were
+used developing Youtube-Data.
+
+Any mainstream GNU/Linux installation includes all the above GNU/Linux power
+tools -- maybe with the exception of Super-sed. If one is not able to find a
+Super-sed binary package for his setup, he must build it from sources [6].
+
+The last two programs listed above -- Cache-DB and Json-Type [3] -- must be
+build from their sources. Cache-DB's source tree is included within the source
+tree of Youtube-Data in 'tools/cache-db' directory. Building Cache-DB is easy,
+as per the instructions in 'tools/cache-db/README'. Note that Cache-DB itself
+needs an additional GNU/Linux tool: GDBM, the GNU Database Manager library.
+
+For what it concerns Json-Type, the first appendix section below presents in
+details how to obtain the newest Json-Type source release package and how to
+make the required binaries out of that package's source tree. Note that the
+version of Json-Type must be at least 0.11.0.
+
+The last prerequisite of Youtube-Data is that of type library 'youtube-data.so'.
+
+Youtube-Data uses Json-Type for parsing, validating and transforming each JSON
+text is receiving from Google's remote service of *YouTube Data API* [2].
+
+The validation of remote service's JSON response texts are done with the help of
+files '*.json' to be found in the top directory of the source tree. These text
+files contain JSON type definitions in the sense of Json-Type corresponding to
+each YouTube Data API endpoint accessed by 'youtube-data'. Each time the shell
+script 'youtube-data' accesses a certain endpoint, it feeds into 'json' program
+the JSON text received and asks 'json' to validate that according to endpoint's
+corresponding type definition.
+
+Now, instead of passing to 'json' type definitions in form of JSON text files,
+'youtube-data' may function by passing to 'json' a compiled type library which
+encompasses in binary form all the type definitions contained in the JSON text
+files. Using the compiled type library 'youtube-data.so' will make 'json' and,
+consequently, 'youtube-data' run faster. This is so because, when given type
+definitions in text form, 'json.so' needs to parse and validate that text for
+constructing internal data structures. When 'json.so' gets type definitions in
+form of the compiled type library 'youtube-data.so', it has nothing more to do
+than simply use that: the library 'youtube-data.so' has all of 'json.so's data
+structures constructed beforehand.
+
+The first appendix section below gives all the details for one to build the type
+library 'youtube-data.so' out of the JSON text files '*.json'.
+
+
+3. Use Cases of Youtube-Data
+============================
+
+This section is devoted to the presentation of main use-cases of Youtube-Data.
+
+Note that the command line examples to be seen below require the fulfillment of
+all preconditions of previous section -- for to have a workable 'youtube-data'
+shell function sourced in the current 'bash' environment from the shell script
+'youtube-data.sh':
+
+  $ . youtube-data.sh
+
+First, let have the '.shortcuts' file contain two entries -- corresponding to
+two very popular C++ channels, "Meeting C++" and "CppCon":
+
+  $ cat <<EOF >.shortcuts
+  meeting-cpp UCJpMLydEYA08vusDkq3FmjQ
+  cppcon      UCMlGfpWw-RUdWX_JbLCukXg
+  EOF
+
+The most useful 'youtube-data' command is `--diff-recent': it produces on
+output the 'diff' between previous and current first page of entries of the
+resource specified. Below, `--id=@meet' means that the resource in question
+is the channel 'meeting-cpp':
+
+  $ youtube-data --id=@meet --diff-recent
+  +vDmQlIeY4z0   4  hours 55   mins ago    There is a new future - Felix Petrico...
+  +WVleZqzTw2k   1    day  4  hours ago    Strong types for strong interfaces - ...
+  +DxP--1yEgKQ   2   days  3  hours ago    The performance Addict's Toolbox - Pe...
+   3tIE6X5FjDE   3   days  1   hour ago    Modern C++ testing with Catch2 - Phil...
+   4DvSxmIadb0   4   days 23  hours ago    Improve your C++ with inspirations fr...
+  -UnIc_qJ0DRc   5   days  3  hours ago    An inspiring introduction into Templa...
+  -fN7nVzbRiEk   5   days 20  hours ago    Local (Arena) Allocators Part II - Jo...
+  -ko6uyw0C8r0   5   days 23  hours ago    Local (Arena) Memory Allocators Part ...
+
+Note that YouTube's Data API [2] arranges its published resources that provide
+result sets on sets of pages, each page to be queried individually for content.
+The command line option `--diff-recent' queries the named channel, or, by case,
+playlist for the first page of its most recent video entries. (By default, the
+size of the page queried is 50.) Than produces a 'diff' with the previous first
+page cached locally.
+
+Using option `-p +NUM' on a `--diff-recent' command line will apply the 'diff'
+to first 'NUM' pages instead of only the first page. Such use-case may come of
+use when the resource in question gets updated very frequently, when the change
+set is not covered by the first page of items only.
+
+Option `--no-relative-date' makes the previous command to display the video's
+published date in the format received from the remote service:
+
+  $ youtube-data --id=@meet --diff-recent --no-relative-date
+  +vDmQlIeY4z0  2018-01-24T09:59:23.000Z  There is a new future - Felix Petricon...
+  +WVleZqzTw2k  2018-01-23T10:42:10.000Z  Strong types for strong interfaces - J...
+  +DxP--1yEgKQ  2018-01-22T10:55:10.000Z  The performance Addict's Toolbox - Pet...
+   3tIE6X5FjDE  2018-01-21T13:31:19.000Z  Modern C++ testing with Catch2 - Phil ...
+   4DvSxmIadb0  2018-01-19T15:31:07.000Z  Improve your C++ with inspirations fro...
+  -UnIc_qJ0DRc  2018-01-19T11:28:54.000Z  An inspiring introduction into Templat...
+  -fN7nVzbRiEk  2018-01-18T18:42:49.000Z  Local (Arena) Allocators Part II - Joh...
+  -ko6uyw0C8r0  2018-01-18T15:00:18.000Z  Local (Arena) Memory Allocators Part 1...
+
+When one does not want to see a diff, but the most recent video entries composed
+as table, he need using options `--show-recent[=NUM]' and `--table' (the latter
+option being optional being the default for `--show-recent'):
+
+  $ youtube-data --id=@meet --show-recent
+  vDmQlIeY4z0   4  hours 55   mins ago    There is a new future - Felix Petricon...
+  WVleZqzTw2k   1    day  4  hours ago    Strong types for strong interfaces - J...
+  DxP--1yEgKQ   2   days  4  hours ago    The performance Addict's Toolbox - Pet...
+  3tIE6X5FjDE   3   days  1   hour ago    Modern C++ testing with Catch2 - Phil ...
+  4DvSxmIadb0   4   days 23  hours ago    Improve your C++ with inspirations fro...
+
+The output of action options `--show-recent' accompanied by option `--list' will
+produce more information than that of option `--table'. Below can be seen that
+video entries have a description text attached:
+
+  $ youtube-data --id=@meet --show-recent=2 --list
+  videoId=vDmQlIeY4z0
+  publishedAt=4 hours 55 mins ago
+  title=There is a new future - Felix Petriconi - Meeting C++ 2017
+  description=Futures were added to C++11 as high level abstractions for
+  description=asynchronous operations and are planed to be enhanced with
+  description=the upcoming C++17 TS. Severals think today that std::future
+  description=is broken...
+  
+  videoId=WVleZqzTw2k
+  publishedAt=1 day 4 hours ago
+  title=Strong types for strong interfaces - Jonathan Boccara - Meeting
+  title=C++ 2017
+  description=Strong types are such a powerful tool for bringing
+  description=expressiveness into code. By using them we can precisely
+  description=state our intentions about our C++ objects, both to
+  description=compilers and to human beings...
+
+The 'description' text attached to channel video entries as provided by the API
+may not suit user's terminal configuration. In such a case, option `--wrap=NUM'
+is of help, wrapping the texts printed out at the specified number of columns.
+
+In the case below, the added option extending a bit the wrapping column from 72
+(the default) to 78, allowing the title of the second entry to fit one line:
+
+  $ youtube-data --id=@meet --show-recent=2 --list --wrap=78
+  videoId=vDmQlIeY4z0
+  publishedAt=4 hours 55 mins ago
+  title=There is a new future - Felix Petriconi - Meeting C++ 2017
+  description=Futures were added to C++11 as high level abstractions for
+  description=asynchronous operations and are planed to be enhanced with the
+  description=upcoming C++17 TS. Severals think today that std::future is
+  description=broken...
+  
+  videoId=WVleZqzTw2k
+  publishedAt=1 day 4 hours ago
+  title=Strong types for strong interfaces - Jonathan Boccara - Meeting C++ 2017
+  description=Strong types are such a powerful tool for bringing expressiveness
+  description=into code. By using them we can precisely state our intentions
+  description=about our C++ objects, both to compilers and to human beings...
+
+If needed, there's the possibility to do no wrapping of text lines at all by
+using option `--no-wrap':
+
+  $ youtube-data --id=@meet --show-recent=2 --list --no-wrap
+  videoId=vDmQlIeY4z0
+  publishedAt=4 hours 55 mins ago
+  title=There is a new future - Felix Petriconi - Meeting C++ 2017
+  description=Futures were added to C++11 as high level abstractions for asynchr...
+  
+  videoId=WVleZqzTw2k
+  publishedAt=1 day 4 hours ago
+  title=Strong types for strong interfaces - Jonathan Boccara - Meeting C++ 2017
+  description=Strong types are such a powerful tool for bringing expressiveness ...
+
+Let see now a few more use-cases that produce the information attached to given
+video entries. Will pick the first video ID -- 'vDmQlIeY4z0' -- seen printed out
+in the tables and lists above and will issue a few more 'youtube-data' commands.
+
+Option `--table' becomes an action option -- determining the output of the shell
+function -- when not used in tandem with action options `--{show|[w]diff-recent':
+
+  $ youtube-data --video=vDmQlIeY4z0 --table
+  UCJpMLydEYA08vusDkq3FmjQ  2018-01-24T09:59:23.000Z   PT1H1M58S  There is a new...
+
+  $ youtube-data --video=vDmQlIeY4z0 --table -b
+  UCJpMLydEYA08vusDkq3FmjQ   5  hours  8   mins ago    PT1H1M58S  There is a new...
+
+The same is true for option `--list': it is also an action option if not paired
+with action options `--*-recent'. The command below shows that `--list' does not
+wrap text lines by default:
+
+  $ youtube-data --video=vDmQlIeY4z0 --list
+  channelId=UCJpMLydEYA08vusDkq3FmjQ
+  publishedAt=2018-01-24T09:59:23.000Z
+  duration=PT1H1M58S
+  title=There is a new future - Felix Petriconi - Meeting C++ 2017
+  description=Futures were added to C++11 as high level abstractions for asynchr...
+  description=
+  description=Therefore Sean Parent and I have developed an alternative, open so...
+  description=
+  description=In the first half of my talk I want to highlight those problems an...
+  description=
+  description=A graph of futures and continuations is for single execution only ...
+  description=
+  description=In the second half of my talk I want to give a brief introduction ...
+
+But option `-w|--wrap' do wrap text lines in specified on the invoking command
+line. The difference with respect to options `--*--recent' stems from the fact
+that wrapping is default behavior for the latter options, while it is not for
+the former options.
+
+  $ youtube-data --video=vDmQlIeY4z0 --list -w
+  channelId=UCJpMLydEYA08vusDkq3FmjQ
+  publishedAt=2018-01-24T09:59:23.000Z
+  duration=PT1H1M58S
+  title=There is a new future - Felix Petriconi - Meeting C++ 2017
+  description=Futures were added to C++11 as high level abstractions for
+  description=asynchronous operations and are planed to be enhanced with
+  description=the upcoming C++17 TS. Severals think today that std::future
+  description=is broken in multiple ways.
+  description=
+  description=Therefore Sean Parent and I have developed an alternative,
+  description=open source, concurrency library that addresses these
+  ...
+
+When one needs only one of the *properties* of a video entry to be printed out,
+than he has to add a corresponding command option to the invoking command line.
+For e.g. 'description' property, that option would obviously be `--description':
+
+  $ youtube-data --video=vDmQlIeY4z0 --description
+  Futures were added to C++11 as high level abstractions for asynchronous operat...
+  
+  Therefore Sean Parent and I have developed an alternative, open source, concur...
+  
+  In the first half of my talk I want to highlight those problems and illustrate...
+  
+  A graph of futures and continuations is for single execution only and would ha...
+  
+  In the second half of my talk I want to give a brief introduction into channel...
+
+By default, the text lines produced by action option `--description' are not
+wrapped, but are left as obtained from the remove service. Specifying though
+`-w|--wrap[=NUM]' will impose the wrapping behavior when asked for it:
+
+  $ youtube-data --video=vDmQlIeY4z0 --description -w
+  Futures were added to C++11 as high level abstractions for
+  asynchronous operations and are planed to be enhanced with
+  the upcoming C++17 TS. Severals think today that std::future
+  is broken in multiple ways.
+  
+  Therefore Sean Parent and I have developed an alternative,
+  open source, concurrency library that addresses these
+  ...
+
+
+4. Appendix: Building Json-Type and 'youtube-data.so'
+=====================================================
+
+This section describes the procedures of obtaining Json-Type's binaries 'json'
+and 'json.so' and Youtube-Data's type library 'youtube-data.so'.
+
+Note that the latter binary is not strictly necessary for the shell function
+'youtube-data' in the shell script 'youtube-data.sh' to work OK. However, it's
+recommended for one to actually build it, since having it will significantly
+improve the responsiveness of 'youtube-data' at the 'bash' command line prompt.
+
+Not having 'youtube-data.so' at hand, each time called by 'youtube-data', the
+'json' program has to parse the type definitions in some '*.json' file for to
+construct its internal data structures. The library 'youtube-data.so' has all
+these data structures already built-up -- thus making 'json' run faster.
+
+For to obtain the Json-Type binaries 'json' and 'json.so' one needs to download
+the latest source release tarball from [4]. Note that the releases of Json-Type
+are signed with GnuPG, therefore upon downloading e.g. version 0.11.0 by means
+of the following two commands:
+
+  $ wget https://download.savannah.gnu.org/releases/json-type/json-type-0.11.0.tar.bz2
+
+  $ wget https://download.savannah.gnu.org/releases/json-type/json-type-0.11.0.tar.bz2.sig
+
+one has to issue two instances of 'gpg' program to check the integrity of the
+received tarball (GnuPG FAQ [5]):
+
+  $ gpg --recv-keys 3D805B7A
+
+  $ gpg --verify json-type-0.11.0.tar.bz2.sig 
+
+Of the two commands above, the former imports into the local keyring Json-Type
+author's key, while the latter verifies the package signature -- thus validating
+its integrity.
+
+After unpacking the downloaded release tarball, for building the needed binaries
+one must apply the procedure described in the README file to be found in the top
+directory of the source tree.
+
+Upon a successful build, for to make accessible to Youtube-Data the binaries
+obtained -- '$JSON_TYPE_HOME/src/json' and '$JSON_TYPE_HOME/lib/json.so' --,
+one should simply define the following shell function wrapper:
+
+  $ json() { local JSON_TYPE_HOME=...; env LD_LIBRARY_PATH="$JSON_TYPE_HOME"/lib "$JSON_TYPE_HOME"/src/json "$@"; }
+
+where '$JSON_TYPE_HOME' points to the top directory of Json-Type's source tree.
+
+Instead of defining the 'json' shell function each time using Youtube-Data, it
+is more convenient to install the two binaries in the system directories, e.g.:
+
+  $ export JSON_TYPE_HOME=...
+
+  $ sudo install -t /usr/local/bin "$JSON_TYPE_HOME"/src/json
+
+  $ sudo install -t /usr/local/lib "$JSON_TYPE_HOME"/lib/json.so
+
+Now that 'json' and 'json.so' are ready to use, it's time to show the way to
+obtain the shared library 'youtube-data.so'. As a matter of fact will follow
+precisely the steps documented by Json-Type's README file, section 4.d, Make
+a compiled (shared object) type library. The only difference would occur with
+respect to the name of the type library: 'youtube-data' instead of 'jsonrpc'.
+
+Step 1: obtain 'youtube-data.mk' and 'youtube-data.c' from Json-Type:
+
+  $ cp "$JSON_TYPE_HOME"/lib/json-type-module.c youtube-data.c
+
+  $ cp "$JSON_TYPE_HOME"/lib/json-type-module.mk youtube-data.mk
+
+Step 2: generate 'youtube-data.def' out of '*.json' files using shell function
+'youtube-data-json' sourced in the current 'bash' environment from shell script
+'youtube-data.sh':
+
+  $ . youtube-data.sh
+
+  $ youtube-data-json|json -Td --sizes-lib-ptr-space-size=2M > youtube-data.def
+
+Note that the option `--sizes-lib-ptr-space-size' is actually required, because
+the type definitions produced by shell function 'youtube-data-json' have a size
+that overruns the default size of one the the memory pools of 'json.so':
+
+  $ youtube-data-json|json -Td > youtube-data.def
+  json.so: fatal error: ptr-space pool alloc failed
+
+Step 3: make 'youtube-data.so' out of 'youtube-data.{c,def}':
+
+  $ make -f youtube-data.mk
+
+Note that '$JSON_TYPE_HOME' needs to be defined prior the call to 'make'. If it
+is not defined in the current environment, then pass it in explicitly:
+
+  $ make -f youtube-data.mk JSON_TYPE_HOME=...
+
+If everything went OK -- one should expect to get neither warnings nor errors
+out of 'make' --, the shared library 'youtube-data.so' is ready for its first
+use:
+
+  $ ./youtube-data.so 
+  youtube-data.so: library version: x.y.z
+
+As seen, the library is executable by itself, producing on output the version
+numbers 'x.y.z' of the 'json.so' library that produced it in the first place.
+
+Another immediate use of 'youtube-data.so' would be that of asking 'json' to
+verify that it accepts the freshly built library:
+
+  $ json -Tc ./youtube-data.so && echo OK
+  OK
+
+If this latter command succeeds, the type library 'youtube-data.so' is ready to
+be used by the 'json' program within the shell function 'youtube-data'.
+
+
+5. Appendix: Using Shell Function 'youtube-data'
+================================================
+
+The shell function 'youtube-data' is the main function defined by shell script
+'youtube-data.sh'. (All other shell functions in 'youtube-data.sh' are auxiliary
+tools for 'youtube-data' -- and are not meant to be used directly by the user.)
+
+This function is a rich-featured tool, having quite a few command line options:
+
+  $ funchelp -f youtube-data.sh -c youtube-data --long-wrap-join=auto
+  actions:
+    -U|--url                  produce resource's API URL
+    -I|--info                 produce resource's cache age and hash file name
+    -H|--hash                 produce resource's hash file names (previous and
+                                current versions) after eventually updating them
+                                according to the specifier given by `--cache=SPEC'
+    -J|--json                 produce resource's JSON text
+    -S|--json2                produce resource's flattened JSON text
+    -D|--diff[=FILE]          diff two resources (the other one is given by
+                                `--file=FILE' or `--id=ID'); the default FILE is
+                                '+', i.e. the one generated by action `-J'
+    -P:|--list[=KEYS]         extract resource's content as list or table; KEYS
+        --table[=KEYS]          are comma-separated lists of JSON key names;
+        --channel-id            `-P?', `--list=?' or `--table=?' prints out the
+        --playlist-id           valid names corresponding to the pair of resource
+        --video-id              type and link type given and exits (default)
+        --published-at
+        --description
+        --duration
+        --title
+    -V:|--show-recent[=NUM]   extract resource's content for the most recent NUM
+        --diff-recent[=NUM]     video items; the output produced is specified by
+        --wdiff-recent[=NUM]    the print options `-P', `--list', `--table', etc;
+                                `--[w]diff-recent' produce a 'diff' or 'wdiff'
+                                between previous version of the resource's cached
+                                content and the one specified by `--cache=SPEC';
+                                the options `--relative-date', `--wrap-text' and
+                                `--color=auto' are implied if not overridden; NUM
+                                is at most the argument of `--max-results' and it
+                                is 5 by default
+  options:
+    -a|--[user-]agent=STR     user agent to be passed to 'wget' when action is
+                                `-J' or when input type is 'id' (default: '+',
+                                i.e. $YOUTUBE_DATA_AGENT)
+    -b|--relative-date[=NUM]  produce relative dates on output or otherwise do
+       --no-relative-date       not; when given NUM, compute dates relative to
+                                NUM as number of seconds since the Epoch
+                                (default: do for `-I' or else do not)
+    -c:|--cache=SPEC          use resource's locally cached files according to
+        --no-cache              the given specifier or, otherwise, do not use the
+                                cache at all, but query the remote party for
+                                content; SPEC is any of 'previous', 'local',
+                                'current', 'auto' (default) or 'refresh';
+                                'previous' means using resource's previous
+                                version locally cached file; 'local' means using
+                                resource's locally cached file -- in any case do
+                                not call the remote party; 'current' means using
+                                resource's current version locally cached file if
+                                that file exists already -- if not, get it from
+                                the remote party; 'auto' means using resource's
+                                locally cached file if and only if the respective
+                                file has not yet reached its aging threshold;
+                                each aged cache file is refreshed the first time
+                                its associated resource is requested; 'refresh'
+                                makes each cached file to be refreshed prior to
+                                using it further regardless of it not exceeding
+                                its aging threshold yet; the aging threshold is
+                                specified by $YOUTUBE_DATA_CACHE_THRESHOLD (which
+                                is of form '[0-9]+[dhms]?'); the short option
+                                `-c' accepts shortcut arguments too: '-', '~',
+                                '#', '=', '+' and '!' for `--no-cache', `-c
+                                previous', `-c local', `-c current', `-c auto'
+                                and `-c refresh' respectively
+    -e|--output-mode=MODE     output mode if output file already exists: 'error',
+                                'append' or 'overwrite' with corresponding
+                                shortcuts '-', '+' and '=' (default: '-' i.e.
+                                'error')
+    -g|--debug                pass `--debug' to 'wget'
+    -h|--home=DIR             home dir (default: '+', i.e. $YOUTUBE_DATA_HOME)
+    -i:|--file[=FILE]         input type -- 'file' or 'id' -- and input name (the
+        --id[=ID]               default type is 'id')
+    -k|--[header-]cookie=STR  header cookie to be passed to 'wget'; when '+' take
+                                the cookie from $YOUTUBE_DATA_COOKIE
+    -l:|--itself              linked resource's type: 'itself', 'playlists' or
+        --playlists             'videos' (default: 'itself')
+        --videos
+    -m|--[max-]results=NUM    max results per API query (value in [1..50],
+                                default: 50)
+    -n:|--color=always|auto   colorize the output of `--list', `--diff-recent'
+        --no-color              and `--wdiff-recent', or otherwise do not
+                                (default: do not for `-P' and 'auto' for `-V' and
+                                `-D', i.e. color only if stdout is a terminal)
+    -o|--output-file=STR      output file name when action is `-J|--json'
+                                (default: '+', i.e. generate a name; '+SUFFIX'
+                                means appending '.SUFFIX' to the generated name)
+    -p|--page=SPEC            resource's pages specifier: '-' means the first
+                                page only, '+NUM' means first NUM >= 1 pages
+                                only, '+' means all pages and '@TOKEN' means the
+                                page identified by TOKEN (default: '+')
+    -q|--quiet                be quiet: when action is `-J|--json' do not print
+                                out the output file name
+    -r:|--channel[=INPUT]     resource's type: 'channel', 'playlist' or 'video'
+        --playlist[=INPUT]      (default: 'channel'); INPUT is either a file name
+        --video[=INPUT]         or an id (default), determined by `--file' or
+                                `--id'; when INPUT terminates with '.json',
+                                consider it to be file name; when INPUT ends with
+                                '{,-playlists,-videos}.json', set the linked type
+                                accordingly
+    -s|--shortcuts=FILE       channel and playlist shortcuts file name (default:
+                                '+', i.e. $YOUTUBE_DATA_SHORTCUTS)
+    -t|--[no-][json-]type     do not type-check resource's JSON object, i.e. do
+                                not pass either of the options `-t $h/*.json' or
+                                `-t $h/youtube-data.so' to 'json', or otherwise
+                                do (default do)
+    -u|--unified=NUM          pass `-u NUM' to 'diff' when action is `-D|--diff'
+                                or `-V|--diff-recent'
+    -v|--[no-]validate        do not validate resource's parameter values or
+                                otherwise do (default do)
+    -w|--wrap[-text][=NUM]    wrap 'title' and 'description' texts when output is
+       --no-wrap[-text]         of type 'list' or otherwise do not (default: do
+                                not for `-P' and do for `-V'; NUM must be >= 13;
+                                its default value is 72)
+    -y|--[app-]key=STR        Google API application key (default: '+', i.e.
+                                $YOUTUBE_DATA_APP_KEY)
+
+The help information seen above is pretty much self-explanatory. Have to add
+that 'youtube-data' reads no input from stdin and produces output on stdout or
+in named files, depending on which mode of operation was chosen by the user.
+The mode of operations of 'youtube-data' are corresponding precisely to shell
+function's action options.
+
+Shell function 'youtube-data's most important helper is 'youtube-wget' -- also
+a shell function defined in 'youtube-data.sh'. The user need not use this latter
+function at all. Nevertheless, if one wants to hack around the behavior of these
+functions (e.g. using option `-d'), then he inevitably will come across function
+'youtube-wget' too:
+
+  $ youtube-data --video=vDmQlIeY4z0 -p- -d
+  youtube-wget \
+  --no-check-certif \
+  --output-document=- \
+  --user-agent="$YOUTUBE_DATA_AGENT" \
+  --action=content \
+  --home="$YOUTUBE_DATA_HOME" \
+  --threshold="$YOUTUBE_DATA_THRESHOLD" \
+  --keep-prev \
+  --save-key \
+  --url='...'|
+  json --json2 -Vusyp -t "$YOUTUBE_DATA_HOME"/youtube-data.so:videos|
+  awk -F '\n' --re-interval '...'
+
+The command line options of 'youtube-wget' are as shown below:
+
+  $ funchelp -f youtube-data.sh -c youtube-wget --long-wrap-join=auto
+  actions:
+    -H|--action=hash            produce cache file name -- 'wget' may be implied
+    -I|--action=info            produce cache age and file name -- no 'wget'
+                                  implied
+    -O|--action=content         produce content -- 'wget' may be implied (default)
+                                  
+  options:
+    -a|--hash-age[=NUM]         pass `--hash-age[=NUM]' to 'cache' when action is
+       --no-hash-age              `-I' or otherwise do not (default not)
+    -c|--[no-]cache-only        use only locally cached files when action is not
+                                  `-I' or otherwise do not (default not)
+    -e|--[no-]save-key          pass `--save-key' to 'cache' when action is not
+                                  `-I' or otherwise do not (default not)
+    -h|--home=DIR               home dir (default: '+', i.e. $YOUTUBE_DATA_HOME)
+    -g|--[no-]log-cache         do not pass `-lvv' to 'cache' or otherwise do
+                                  (default do)
+    -k|--[no-]keep-prev         pass `--keep-prev' to 'cache' when action is not
+                                  `-I' or otherwise do not (default not)
+    -l|--[no-]log-wget          do not pass `--append-output=$h/.cache/wget.log'
+                                  to 'wget' or otherwise do (default do)
+    -t|--[cache-]threshold=VAL  cache threshold value ('inf' or of form
+                                  '[0-9]+[dhms]?'; default: '16h')
+    -w:|--debug                 options to be passed as such to 'wget'
+        --quiet
+        --no-check-certif
+        --connect-timeout=NUM
+        --header=STR
+        --output-document=FILE
+        --user-agent=STR
+    -u|--url=STR                input URL
+
+The shell function 'youtube-wget' has three modes of operation -- corresponding
+each to one of its action options. These three action options determines the
+output provided: either a hash file name or a pair consisting of cache age and
+hash file name or hash file content. As mentioned by the help information above,
+depending on the invoking action, 'youtube-wget' may or may not call the remote
+API on the given URL. The shell function is using the programs 'cache' and 'wget'
+for to achieve its duties.
+
+
+6. References
+=============
+
+[1] Google Developers Console
+    https://console.developers.google.com/
+
+[2] YouTube Data API
+    https://developers.google.com/youtube/v3/
+
+[3] Json-Type: JSON Push Parsing and Type Checking
+    http://nongnu.org/json-type/
+
+[4] Json-Type's Release Tarballs
+    https://download.savannah.gnu.org/releases/json-type/
+
+[5] GnuPG FAQ: How can I use GnuPG to verify a file I've downloaded?
+    https://www.gnupg.org/faq/gnupg-faq.html#how_do_i_verify_signed_packages
+
+[6] Super-sed
+    http://sed.sourceforge.net/grabbag/ssed/
+
+    http://sed.sourceforge.net/grabbag/ssed/sed-3.62.tar.gz
+
+

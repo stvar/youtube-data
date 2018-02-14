@@ -1,0 +1,162 @@
+
+                                    Cache-DB
+                                    ~~~~~~~~
+                        Stefan Vargyas, stvar@yahoo.com
+
+                                  Jan 18, 2018
+
+
+Table of Contents
+-----------------
+
+0. Copyright
+1. The Cache-DB Program
+2. Prerequisites of Cache-DB
+3. Building Cache-DB
+4. References
+
+
+0. Copyright
+============
+
+This program is GPL-licensed free software. Its author is Stefan Vargyas. You
+can redistribute it and/or modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+You should have received a copy of the GNU General Public License along with
+this program (look up for the file COPYING in the top directory of the source
+tree). If not, see http://gnu.org/licenses/gpl.html.
+
+The source tree of Cache-DB includes source files from another free software
+project: Json-Type [2]. These source files were placed in a separate directory,
+'lib'. Each such Json-Type source file contains unaltered the original copyright
+and license notices.
+
+
+1. The Cache-DB Program
+=======================
+
+Cache-DB's vocation is that of a lower-level auxiliary tool employable by shell
+scripts needing to cache content in an own directory. The source of the content
+is not specified within Cache-DB, only that each resource must have attached an
+uniquely identifying non-empty string (any sequence of one or more characters
+terminated by the NUL character) -- a name.
+
+Cache-DB associates to each such resource name a hash value -- an 32-bit or, by
+case, a 64-bit unsigned integer, depending of one's choice at build-time -- and
+a timestamp. The hash value is assigned to a given resource name the first time
+Cache-DB is queried for that name and after that doesn't change for that name's
+entire life-time. These hash values serve the purpose of naming the files hosted
+in the script's caching directory that are storing actual resource content. On
+the contrary to hashes being immutable, timestamps associated to resource names
+do change over the life-time of any such name. Each timestamp record the moment
+of time when the content of the associated resource was most recently updated.
+
+
+2. Prerequisites of Cache-DB
+============================
+
+Functioning as a single table database, Cache-DB relies on GDBM [1] for actual
+data storage functionalities. Consequently, prior to proceed further to build
+Cache-DB, one needs to make sure his GNU/Linux setup has a properly installed
+*development package* of GDBM. That is a package which contains include files
+(specifically 'gdbm.h') along the shared library 'libgdbm.so'.
+
+To verify that GCC correctly finds GDBM, issue the following commands:
+
+  $ . libgdbm-version.sh
+
+  $ libgdbm-version 
+  10803
+
+If things work OK, the shell function 'libgdbm-version' sourced from bash shell
+script 'libgdbm-version.sh' prints out the version of GDBM that GCC found via
+its own library lookup procedure.
+
+In case one uses a custom-built GDBM (e.g. a build obtained out of a cloned git
+source tree) which is installed in an non-standard directory, then pass on to
+the shell function above the path to that binary to see whether GCC finds it OK:
+
+  $ libgdbm-version ~/gdbm/local/lib
+  11300
+
+The next section will show that any custom-built GDBM may very well be used for
+building Cache-DB: only have to pass on to 'make' the path to that instance.
+
+
+3. Building Cache-DB
+====================
+
+Cache-DB is consists of a sole source file -- 'cache.c' -- which produces the
+binary 'cache'. Building this binary is straightforward: invoke 'make':
+
+  $ make ARGS...
+
+Cache-DB was developed using GCC versions 4.3.4 and 7.2.0, GNU 'make' 3.81 and
+GDBM 1.8.3. Cache-DB does not compile out of the box with 'clang', but one might
+read the document 'doc/clang-build.txt' of Json-Type [2] if constrained to not
+use GCC. The notes therein and the attached 'doc/clang-build.patch' are very
+pertinent and of help within this context too.
+
+The makefile 'Makefile' contains four helpful parameters which can be passed
+to it via the invoking 'make' command line:
+
+   --------------  ------------------------------------------------------
+    HASH            the number of bits of the hash values of Cache-DB
+                    (either 32 or 64, 32 being the default)            
+   --------------  ------------------------------------------------------
+    GDBM_HOME       home directory of a custom-built GDBM which contains
+                    proper 'include' and 'lib' subdirectories
+   --------------  ------------------------------------------------------
+    GDBM_INCLUDE    'include' directory of custom-built GDBM containing
+                    a proper 'gdbm.h' include file that is matching the
+                    shared library 'libgdbm.so' in '$GDBM_LIB'
+   --------------  ------------------------------------------------------
+    GDBM_LIB        'lib' directory of custom-built GDBM containing the
+                    shared library 'libgdbm.so' that matches the include
+                    file 'gdbm.h' in '$GDBM_INCLUDE' 
+   --------------  ------------------------------------------------------
+
+Consequently, if one has a custom-built GDBM which isn't reachable through GCC's
+standard library lookup procedure, 'cache' can still be build with that GDBM if
+issuing something like the following command -- assuming that GDBM is hosted by
+say directory '~/gdbm/local':
+
+  $ make GDBM_HOME=~/gdbm/local
+
+Upon a successful build of 'cache' binary -- that is a clean build, without any
+warnings -- one may issue the well-accustomed `--help' and `--version' commands:
+
+  $ ./cache --help
+  ...
+
+  $ ./cache --version
+  cache: version 0.2 -- 2018-01-14 13:34
+  cache: libgdbm.so: version: 1.8.3 -- 2002-10-15
+  cache: libgdbm.so: build: 2009-02-21 06:52:31
+  cache: libgdbm.so: path: /usr/lib64/libgdbm.so.3.0.0
+  cache: TIME_BITS: 64
+  cache: HASH_BITS: 32
+  cache: DEBUG: yes
+
+In spite of being rather brief, the information provided by `--help' is clear
+and self-evident. Documenting all the options of 'cache' program is beyond the
+scope of this README file.
+
+The command line option `--version' is useful verifying the version numbers of
+GDBM as seen at runtime by 'cache'. In case one uses multiple versions of GDBM,
+the output produced by `--version' validates whether 'cache' is working with
+the expected library instance or not.
+
+
+4. References
+=============
+
+[1] GDBM -- The GNU Database Manager
+    https://www.gnu.org.ua/software/gdbm/
+
+[2] Json-Type: JSON Push Parsing and Type Checking
+    http://nongnu.org/json-type/
+
+
