@@ -87,8 +87,8 @@ assignments for example in user's own '~/.bashrc' file.
 
 A more involved prerequisite of Youtube-Data refers to the third-party programs
 required for the well-functioning of the shell functions in 'youtube-data.sh' --
-specifically that of its main one, 'youtube-data.sh'. The 'bash' shell script
-'youtube-data.sh' makes use of the following programs:
+specifically that of its main one, 'youtube-data'. Youtube-Data's 'bash' shell
+script makes use of the following programs:
 
   -----------------------------------------------
                GNU/Linux Power Tools
@@ -175,9 +175,9 @@ two very popular C++ channels, "Meeting C++" and "CppCon":
   cppcon      UCMlGfpWw-RUdWX_JbLCukXg
   EOF
 
-The most useful 'youtube-data' command is `--diff-recent': it produces on
-output the 'diff' between previous and current first page of entries of the
-resource specified. Below, `--id=@meet' means that the resource in question
+The most useful 'youtube-data' action option is `--diff-recent': it produces
+on stdout the 'diff' between previous and current first page of the resource
+specified. Below, the syntax `--id=@meet' means that the resource in question
 is the channel 'meeting-cpp':
 
   $ youtube-data --id=@meet --diff-recent
@@ -194,13 +194,13 @@ Note that YouTube's Data API [2] arranges its published resources that provide
 result sets on sets of pages, each page to be queried individually for content.
 The command line option `--diff-recent' queries the named channel, or, by case,
 playlist for the first page of its most recent video entries. (By default, the
-size of the page queried is 50.) Than produces a 'diff' with the previous first
-page cached locally.
+number or entries retrieved per each page queried is 50.) Than produces a 'diff'
+with the previously cached first page.
 
 Using option `-p +NUM' on a `--diff-recent' command line will apply the 'diff'
 to first 'NUM' pages instead of only the first page. Such use-case may come of
-use when the resource in question gets updated very frequently, when the change
-set is not covered by the first page of items only.
+use when the resource in question gets updated very frequently and the change
+set is not covered by the first page only.
 
 Option `--no-relative-date' makes the previous command to display the video's
 published date in the format received from the remote service:
@@ -217,7 +217,7 @@ published date in the format received from the remote service:
 
 When one does not want to see a diff, but the most recent video entries composed
 as table, he need using options `--show-recent[=NUM]' and `--table' (the latter
-option being optional being the default for `--show-recent'):
+option is optional for the action option `--show-recent'):
 
   $ youtube-data --id=@meet --show-recent
   vDmQlIeY4z0   4  hours 55   mins ago    There is a new future - Felix Petricon...
@@ -226,9 +226,9 @@ option being optional being the default for `--show-recent'):
   3tIE6X5FjDE   3   days  1   hour ago    Modern C++ testing with Catch2 - Phil ...
   4DvSxmIadb0   4   days 23  hours ago    Improve your C++ with inspirations fro...
 
-The output of action options `--show-recent' accompanied by option `--list' will
+The output of action option `--show-recent' accompanied by option `--list' will
 produce more information than that of option `--table'. Below can be seen that
-video entries have a description text attached:
+video entries have a 'description' property attached:
 
   $ youtube-data --id=@meet --show-recent=2 --list
   videoId=vDmQlIeY4z0
@@ -252,8 +252,8 @@ The 'description' text attached to channel video entries as provided by the API
 may not suit user's terminal configuration. In such a case, option `--wrap=NUM'
 is of help, wrapping the texts printed out at the specified number of columns.
 
-In the case below, the added option extending a bit the wrapping column from 72
-(the default) to 78, allowing the title of the second entry to fit one line:
+In the case below, the added option extends a bit the wrapping column from 72nd
+(the default) to 78th, allowing the title of the second item to fit in one line:
 
   $ youtube-data --id=@meet --show-recent=2 --list --wrap=78
   videoId=vDmQlIeY4z0
@@ -289,8 +289,9 @@ Let see now a few more use-cases that produce the information attached to given
 video entries. Will pick the first video ID -- 'vDmQlIeY4z0' -- seen printed out
 in the tables and lists above and will issue a few more 'youtube-data' commands.
 
-Option `--table' becomes an action option -- determining the output of the shell
-function -- when not used in tandem with action options `--{show|[w]diff-recent':
+Option `--table' becomes an action option -- i.e. it determines the output of
+'youtube-data' -- when not used in tandem with action options `--[w]diff-recent'
+or `--show-recent':
 
   $ youtube-data --video=vDmQlIeY4z0 --table
   UCJpMLydEYA08vusDkq3FmjQ  2018-01-24T09:59:23.000Z   PT1H1M58S  There is a new...
@@ -317,10 +318,10 @@ wrap text lines by default:
   description=
   description=In the second half of my talk I want to give a brief introduction ...
 
-But option `-w|--wrap' do wrap text lines in specified on the invoking command
-line. The difference with respect to options `--*--recent' stems from the fact
+But option `-w|--wrap' do wrap text lines when specified on a `--list' command
+line. The difference with respect to options `--*--recent' is due to the fact
 that wrapping is default behavior for the latter options, while it is not for
-the former options.
+the former one.
 
   $ youtube-data --video=vDmQlIeY4z0 --list -w
   channelId=UCJpMLydEYA08vusDkq3FmjQ
@@ -336,9 +337,9 @@ the former options.
   description=open source, concurrency library that addresses these
   ...
 
-When one needs only one of the *properties* of a video entry to be printed out,
-than he has to add a corresponding command option to the invoking command line.
-For e.g. 'description' property, that option would obviously be `--description':
+When one needs a particular property of a video entry to be printed out, than he
+has to use a corresponding action option in the invoking command line. E.g, for
+'description' property, that action option would obviously be `--description':
 
   $ youtube-data --video=vDmQlIeY4z0 --description
   Futures were added to C++11 as high level abstractions for asynchronous operat...
@@ -352,8 +353,7 @@ For e.g. 'description' property, that option would obviously be `--description':
   In the second half of my talk I want to give a brief introduction into channel...
 
 By default, the text lines produced by action option `--description' are not
-wrapped, but are left as obtained from the remove service. Specifying though
-`-w|--wrap[=NUM]' will impose the wrapping behavior when asked for it:
+wrapped. Specifying though `-w|--wrap[=NUM]' will impose the wrapping behavior:
 
   $ youtube-data --video=vDmQlIeY4z0 --description -w
   Futures were added to C++11 as high level abstractions for
