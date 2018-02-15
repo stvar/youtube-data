@@ -175,10 +175,11 @@ two very popular C++ channels, "Meeting C++" and "CppCon":
   cppcon      UCMlGfpWw-RUdWX_JbLCukXg
   EOF
 
-The most useful 'youtube-data' action option is `--diff-recent': it produces
-on stdout the 'diff' between previous and current first page of the resource
-specified. Below, the syntax `--id=@meet' means that the resource in question
-is the channel 'meeting-cpp':
+The most useful action option of 'youtube-data' is `--diff-recent[=NUM]': it
+produces on stdout the 'diff' between previous and current most recent NUM 
+(5 when NUM is not given) video entries the resource specified -- either a
+channel or a playlist. Below, the syntax `--id=@meet' means that the resource
+in question is the channel of which shortcut is 'meeting-cpp':
 
   $ youtube-data --id=@meet --diff-recent
   +vDmQlIeY4z0   4  hours 55   mins ago    There is a new future - Felix Petrico...
@@ -192,10 +193,10 @@ is the channel 'meeting-cpp':
 
 Note that YouTube's Data API [2] arranges its published resources that provide
 result sets on sets of pages, each page to be queried individually for content.
-The command line option `--diff-recent' queries the named channel, or, by case,
-playlist for the first page of its most recent video entries. (By default, the
-number or entries retrieved per each page queried is 50.) Than produces a 'diff'
-with the previously cached first page.
+The command line option `--diff-recent[=NUM]' queries the named channel, or, by
+case, playlist for the first page of its most recent video entries. (By default,
+the number or entries retrieved per each page queried is 50.) Than produces the
+'diff' with the previously cached first page selecting only the top NUM entries.
 
 Using option `-p +NUM' on a `--diff-recent' command line will apply the 'diff'
 to first 'NUM' pages instead of only the first page. Such use-case may come of
