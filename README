@@ -608,7 +608,8 @@ The help information seen above is pretty much self-explanatory. Have to add
 that 'youtube-data' produces output on stdout or in named files, depending on
 which mode of operation was chosen by the user -- equally: depending on which
 action option was last specified in the invoking command line; 'youtube-data'
-reads input from stdin or named files only when issued with option `--file'.
+reads input from stdin or named files only when issued with options `--file'
+or `--diff'.
 
 Shell function 'youtube-data's most important helper is 'youtube-wget' -- also
 a shell function defined in 'youtube-data.sh'. The user need not use this latter
