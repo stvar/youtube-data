@@ -412,7 +412,6 @@ struct database_t
     struct database_metadata_t
                     meta;
     bits_t          null: 1;
-    bits_t          has_errno: 1;
     const char*     home;
     GDBM_FILE       file;
     FILE*           log;
@@ -2480,8 +2479,6 @@ static size_t parse_threshold_optarg(
         c == 'm' ||
         c == 's')
         p ++;
-    else
-        c = 's';
 
     if (*p != 0)
         invalid_opt_arg(opt_name, opt_arg);
