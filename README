@@ -177,7 +177,7 @@ two very popular C++ channels, "Meeting C++" and "CppCon":
 
 The most useful action option of 'youtube-data' is `--diff-recent[=NUM]': it
 produces on stdout the 'diff' between previous and current most recent NUM 
-(5 when NUM is not given) video entries the resource specified -- either a
+(5 when NUM is not given) video entries of the resource specified -- either a
 channel or a playlist. Below, the syntax `--id=@meet' means that the resource
 in question is the channel of which shortcut is 'meeting-cpp':
 
