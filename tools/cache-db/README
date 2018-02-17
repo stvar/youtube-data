@@ -139,6 +139,7 @@ warnings -- one may issue the well-accustomed `--help' and `--version' commands:
   cache: TIME_BITS: 64
   cache: HASH_BITS: 32
   cache: DEBUG: yes
+  ...
 
 In spite of being rather brief, the information provided by `--help' is clear
 and self-evident. Documenting all the options of 'cache' program is beyond the
