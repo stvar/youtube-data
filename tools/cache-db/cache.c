@@ -129,6 +129,12 @@ static const char program[] = STRINGIFY(PROGRAM);
 static const char library[] = STRINGIFY(LIBRARY);
 static const char verdate[] = "0.2 -- 2018-01-14 13:34"; // $ date +'%F %R'
 
+static const char license[] =
+"Copyright (C) 2018  Stefan Vargyas.\n"
+"License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n"
+"This is free software: you are free to change and redistribute it.\n"
+"There is NO WARRANTY, to the extent permitted by law.\n";
+
 const char stdin_name[] = "<stdin>";
 
 typedef unsigned char uchar_t;
@@ -2116,7 +2122,7 @@ static void version(void)
         "%s: %s: path: %s\n"
         "%s: TIME_BITS: %zu\n"
         "%s: HASH_BITS: %d\n"
-        "%s: DEBUG: " DEBUG_NAME "\n",
+        "%s: DEBUG: " DEBUG_NAME "\n\n%s",
         program, verdate,
         program, library, v.major, v.minor,
             v.patch, NSTR(v.vdate),
@@ -2124,7 +2130,7 @@ static void version(void)
         program, library, NSTR(v.rpath),
         program, TIME_BITS,
         program, HASH_BITS,
-        program);
+        program, license);
 
     lib_version_done(&v);
 }
