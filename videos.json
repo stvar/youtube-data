@@ -660,15 +660,11 @@
                                     },
                                     {
                                         "name": "embedHeight",
-                                        "type": {
-                                            "plain": "$long"
-                                        }
+                                        "type": "string"
                                     },
                                     {
                                         "name": "embedWidth",
-                                        "type": {
-                                            "plain": "$long"
-                                        }
+                                        "type": "string"
                                     }
                                 ]
                             }
