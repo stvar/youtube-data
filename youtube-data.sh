@@ -17,6 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Youtube-Data.  If not, see <http://www.gnu.org/licenses/>.
 
+shopt -s extglob
+
 [ -z "$YOUTUBE_DATA_HOME" ] &&
 export YOUTUBE_DATA_HOME="$HOME/youtube-data"
 
@@ -43,8 +45,6 @@ YOUTUBE_WGET_TEE_EXIT_NOPIPE=''
     YOUTUBE_WGET_TEE_EXIT_NOPIPE=''
 }
 export YOUTUBE_WGET_TEE_EXIT_NOPIPE
-
-shopt -s extglob
 
 usage()
 {
