@@ -2257,7 +2257,7 @@ static void usage(void)
         "                          update operation on the given key, makes\n"
         "                          the key's associated hash file be updated;\n"
         "                          VAL is 'inf' or of form '[0-9]+[dhms]?'\n"
-        "      --dump-opts       print options and exit\n"
+        "     --dump-opts        print options and exit\n"
         "  -v|--[no-]verbose     be verbose (cumulative) or not\n"
         "  -V|--version          print version numbers and exit\n"
         "  -?|--help             display this help info and exit\n",
