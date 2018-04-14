@@ -1326,6 +1326,8 @@ static enum hash_file_exists_result_t
     while ((r = hash_file_exists(db, entry->file_hash, NULL)) ==
                 hash_file_exists_ok) {
         entry->file_hash ++;
+        if (entry->file_hash == 0)
+            entry->file_hash ++;
         i ++;
     }
 
