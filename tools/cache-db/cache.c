@@ -2508,6 +2508,274 @@ static size_t parse_threshold_optarg(
     return v;
 }
 
+// stev: comment out the following define to disable
+// processing of long command line options using the
+// generated function 'lookup_long_opt' below
+#define CONFIG_GETOPT_LONG2
+
+#ifdef CONFIG_GETOPT_LONG2
+
+static inline bool prefix(
+    const char* p, const char* q)
+{
+    while (*p && *q &&
+           *p == *q)
+         ++ p, ++ q;
+    return *p == 0;
+}
+
+// $ . ~/trie-gen/commands.sh
+
+// # long-opts [-n]
+// $ long-opts() { ${GCC:-gcc} -Wall -Wextra -std=gnu99 -Ilib -DPROGRAM=cache -DLIBRARY=libgdbm.so -DGDBM_VERSION=10803 -DHASH_BITS=32 -DDEBUG -E cache.c -o -|ssed -nR '/\slong_opts\s*\[\]\s*=\s*\{\s*$/,/^\s+\}\s*;\s*$/{:0;/^\s*(\{\s*".*?"\s*,\s*\d+\s*,\s*(?:\d+|\&\s*[a-z0-9_]+)\s*,\s*[a-z0-9_]+\s*\}\s*,)/!b;s//\1\n/;s/" "//;P;s/^.*?\n//;b0}'|if [ "$1" == '-n' ]; then ssed -nR 's/^.*?"(.*?)".*?$/\1/p'; else cat; fi; }
+
+// $ gen-long-opts-func() { long-opts -n|gen-func -r- -f lookup_long_opt -e-1 -Pf -uz|ssed -R '1s/^/static /'; }
+
+// $ long-opts|less
+// $ long-opts -n|less
+// $ gen-long-opts-func 
+
+static int lookup_long_opt(const char* p)
+{
+    switch (*p ++) {
+    case 'd':
+        switch (*p ++) {
+        case 'r':
+            if (prefix(p, "y-run"))
+                return 9;
+            return -1;
+        case 'u':
+            if (prefix("mp-", p)) {
+                p += 3;
+                switch (*p ++) {
+                case 'm':
+                    if (prefix(p, "eta"))
+                        return 0;
+                    return -1;
+                case 'o':
+                    if (prefix(p, "pts"))
+                        return 30;
+                    return -1;
+                case 'p':
+                    if (prefix(p, "retty"))
+                        return 2;
+                    return -1;
+                case 'r':
+                    if (prefix(p, "aw"))
+                        return 1;
+                }
+            }
+        }
+        return -1;
+    case 'e':
+        if (prefix(p, "rror"))
+            return 26;
+        return -1;
+    case 'h':
+        switch (*p ++) {
+        case 'a':
+            if (prefix("sh-", p)) {
+                p += 3;
+                switch (*p ++) {
+                case 'a':
+                    if (prefix(p, "ge"))
+                        return 11;
+                    return -1;
+                case 'f':
+                    if (prefix(p, "ile"))
+                        return 13;
+                }
+            }
+            return -1;
+        case 'e':
+            if (prefix(p, "lp"))
+                return 34;
+            return -1;
+        case 'o':
+            if (prefix(p, "me"))
+                return 8;
+        }
+        return -1;
+    case 'i':
+        if (prefix(p, "mport-db"))
+            return 7;
+        return -1;
+    case 'k':
+        if (prefix(p, "eep-prev"))
+            return 15;
+        return -1;
+    case 'l':
+        if (*p ++ == 'o') {
+            switch (*p ++) {
+            case 'g':
+                if (*p == 0)
+                    return 19;
+                return -1;
+            case 'o':
+                if (prefix(p, "kup-key"))
+                    return 3;
+            }
+        }
+        return -1;
+    case 'n':
+        switch (*p ++) {
+        case 'o':
+            if (*p ++ == '-') {
+                switch (*p ++) {
+                case 'd':
+                    if (prefix(p, "ry-run"))
+                        return 10;
+                    return -1;
+                case 'e':
+                    if (prefix(p, "rror"))
+                        return 25;
+                    return -1;
+                case 'h':
+                    if (prefix("ash-", p)) {
+                        p += 4;
+                        switch (*p ++) {
+                        case 'a':
+                            if (prefix(p, "ge"))
+                                return 12;
+                            return -1;
+                        case 'f':
+                            if (prefix(p, "ile"))
+                                return 14;
+                        }
+                    }
+                    return -1;
+                case 'k':
+                    if (prefix(p, "eep-prev"))
+                        return 16;
+                    return -1;
+                case 'l':
+                    if (prefix(p, "og"))
+                        return 20;
+                    return -1;
+                case 'n':
+                    if (prefix(p, "ull"))
+                        return 18;
+                    return -1;
+                case 'p':
+                    if (prefix(p, "rev-key"))
+                        return 22;
+                    return -1;
+                case 's':
+                    switch (*p ++) {
+                    case 'a':
+                        if (prefix(p, "ve-key"))
+                            return 24;
+                        return -1;
+                    case 'y':
+                        if (prefix(p, "nc"))
+                            return 28;
+                    }
+                    return -1;
+                case 'v':
+                    if (prefix(p, "erbose"))
+                        return 33;
+                }
+            }
+            return -1;
+        case 'u':
+            if (prefix(p, "ll"))
+                return 17;
+        }
+        return -1;
+    case 'p':
+        if (prefix(p, "rev-key"))
+            return 21;
+        return -1;
+    case 'r':
+        if (*p ++ == 'e') {
+            switch (*p ++) {
+            case 'm':
+                if (prefix(p, "ove-key"))
+                    return 5;
+                return -1;
+            case 's':
+                if (prefix(p, "tore-key"))
+                    return 6;
+            }
+        }
+        return -1;
+    case 's':
+        switch (*p ++) {
+        case 'a':
+            if (prefix(p, "ve-key"))
+                return 23;
+            return -1;
+        case 'y':
+            if (prefix(p, "nc"))
+                return 27;
+        }
+        return -1;
+    case 't':
+        if (prefix(p, "hreshold"))
+            return 29;
+        return -1;
+    case 'u':
+        if (prefix(p, "pdate-key"))
+            return 4;
+        return -1;
+    case 'v':
+        if (prefix("er", p)) {
+            p += 2;
+            switch (*p ++) {
+            case 'b':
+                if (prefix(p, "ose"))
+                    return 32;
+                return -1;
+            case 's':
+                if (prefix(p, "ion"))
+                    return 31;
+            }
+        }
+    }
+    return -1;
+}
+
+static int getopt_long2(
+    int argc, char* const argv[],
+    const char* shorts, const struct option* longs,
+    int* index)
+{
+    const size_t n = sizeof(struct option);
+
+    static struct option l[2];
+    char *p, *q;
+    int k;
+
+    ASSERT(argc > 0);
+    ASSERT(argv != NULL);
+    ASSERT(shorts != NULL);
+    ASSERT(longs != NULL);
+
+    if (optind < argc) {
+        ASSERT(optind > 0);
+        p = argv[optind];
+
+        if (*p ++ == '-' && *p ++ == '-' && *p) {
+            if ((q = strchr(p, '=')))
+                *q = 0;
+
+            if ((k = lookup_long_opt(p)) >= 0) {
+                memcpy(l, &longs[k], n);
+                longs = l;
+            }
+            else
+                longs = l + 1;
+
+            if (q) *q = '=';
+        }
+    }
+
+    return getopt_long(argc, argv, shorts, longs, index);
+}
+
+#define getopt_long getopt_long2
+#endif // CONFIG_GETOPT_LONG2
+
 const struct options_t* options(int argc, char* argv[])
 {
     static struct options_t opts = {
@@ -2573,6 +2841,11 @@ const struct options_t* options(int argc, char* argv[])
         no_sync_opt,
         no_verbose_opt,
     };
+
+    // stev: note that function 'lookup_long_opt' above
+    // needs to be regenerated each and every time the
+    // variable 'long_opts' below changes, in case of
+    // CONFIG_GETOPT_LONG2 has been defined!
 
     static struct option long_opts[] = {
         { "dump-meta",    0,       0, dump_meta_act },
