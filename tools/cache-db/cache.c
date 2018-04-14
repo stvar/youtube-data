@@ -44,7 +44,6 @@
 #include "ptr-traits.h"
 #include "char-traits.h"
 
-#define WEAK      __attribute__((weak))
 #define UNUSED    __attribute__((unused))
 #define PRINTF(F) __attribute__((format(printf, F, F + 1)))
 #define NORETURN  __attribute__((noreturn))
