@@ -2460,15 +2460,8 @@ static size_t parse_timestamp_optarg(
 static size_t parse_threshold_optarg(
     const char* opt_name, const char* opt_arg)
 {
-    static const size_t mul[] = {
-        1, 60, 60 * 60, 24 * 60 * 60
-    };
-    static const char suf[] = "smhd";
-
-    const size_t hy = 100 * 365;
     const char *p = NULL;
-    size_t v, i;
-    char c;
+    size_t v, m;
 
     if (!strcmp(opt_arg, "inf"))
         return SIZE_MAX;
@@ -2480,29 +2473,24 @@ static size_t parse_threshold_optarg(
     if (*p == 0)
         return v;
 
-    c = *p;
-    if (c == 'd' ||
-        c == 'h' ||
-        c == 'm' ||
-        c == 's')
-        p ++;
+    m = 1;
+    switch (*p) {
+    case 'd': m *= 24; // fallthrough
+    case 'h': m *= 60; // fallthrough
+    case 'm': m *= 60; // fallthrough
+    case 's': p ++;
+    }
 
     if (*p != 0)
         invalid_opt_arg(opt_name, opt_arg);
 
-    p = strchr(suf, c);
-    ASSERT(p != NULL);
-
-    i = PTR_DIFF(p, suf);
-    ASSERT(i < ARRAY_SIZE(mul));
-
-    if (!SIZE_MUL_NO_OVERFLOW(v, mul[i]))
+    if (!SIZE_MUL_NO_OVERFLOW(v, m))
         illegal_opt_arg(opt_name, opt_arg);
 
-    v *= mul[i];
+    v *= m;
 
     // stev: arbitrary upper bound: 100 years
-    if (v > SIZE_MUL(hy, mul[3]))
+    if (v > SZ(3153600000))
         illegal_opt_arg(opt_name, opt_arg);
 
     return v;
