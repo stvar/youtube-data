@@ -132,7 +132,7 @@ The last prerequisite of Youtube-Data is that of type library 'youtube-data.so'.
 Youtube-Data uses Json-Type for parsing, validating and transforming each JSON
 text is receiving from Google's remote service of *YouTube Data API* [2].
 
-The validation of remote service's JSON response texts are done with the help of
+The validation of remote service's JSON response texts is done with the help of
 files '*.json' to be found in the top directory of the source tree. These text
 files contain JSON type definitions in the sense of Json-Type corresponding to
 each YouTube Data API endpoint accessed by 'youtube-data'. Each time the shell
@@ -446,7 +446,7 @@ Step 2: generate 'youtube-data.def' out of '*.json' files using shell function
 
 Note that the option `--sizes-lib-ptr-space-size' is actually required, because
 the type definitions produced by shell function 'youtube-data-json' have a size
-that overruns the default size of one the the memory pools of 'json.so':
+that overruns the default size of one the memory pools of 'json.so':
 
   $ youtube-data-json|json -Td > youtube-data.def
   json.so: fatal error: ptr-space pool alloc failed
@@ -614,9 +614,9 @@ or `--diff'.
 
 Shell function 'youtube-data's most important helper is 'youtube-wget' -- also
 a shell function defined in 'youtube-data.sh'. The user need not use this latter
-function at all. Nevertheless, if one wants to hack around the behavior of these
-functions (e.g. using option `-d'), then he inevitably will come across function
-'youtube-wget' too:
+function at all. Nevertheless, if one wants to hack around the behavior of shell
+function 'youtube-data' (e.g. using option `-d'), then he inevitably will come
+across function 'youtube-wget' too:
 
   $ youtube-data --video=vDmQlIeY4z0 -p- -d
   youtube-wget \
