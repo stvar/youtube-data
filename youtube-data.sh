@@ -2906,3 +2906,26 @@ youtube-data-json()
     echo ']'
 }
 
+youtube-data-litex()
+{
+    local n
+    local k=5
+
+    echo '{'
+
+    for n in \
+        channels \
+        playlists \
+        videos \
+        search \
+        playlist-items
+    do
+        [ $((-- k)) -eq 0 ] && k=''
+        echo -ne '\t"'$n'": '
+        ssed -Re '2,$s/^/\t/'"${k:+;\$s/$/,/}" \
+        $n-litex.json
+    done
+
+    echo '}'
+}
+
