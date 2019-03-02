@@ -1,4 +1,4 @@
-// Copyright (C) 2018  Stefan Vargyas
+// Copyright (C) 2018, 2019  Stefan Vargyas
 // 
 // This file is part of Cache-DB.
 // 
@@ -129,7 +129,7 @@ static const char library[] = STRINGIFY(LIBRARY);
 static const char verdate[] = "0.3 -- 2018-04-14 09:28"; // $ date +'%F %R'
 
 static const char license[] =
-"Copyright (C) 2018  Stefan Vargyas.\n"
+"Copyright (C) 2018, 2019  Stefan Vargyas.\n"
 "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n"
 "This is free software: you are free to change and redistribute it.\n"
 "There is NO WARRANTY, to the extent permitted by law.\n";
