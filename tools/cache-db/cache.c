@@ -2506,8 +2506,7 @@ static size_t parse_threshold_optarg(
 static inline bool prefix(
     const char* p, const char* q)
 {
-    while (*p && *q &&
-           *p == *q)
+    while (*p && *p == *q)
          ++ p, ++ q;
     return *p == 0;
 }
