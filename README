@@ -13,7 +13,8 @@ Table of Contents
 1. The Youtube-Data Program
 2. Prerequisites of Youtube-Data
 3. Use Cases of Youtube-Data
-4. Appendix: Building Json-Type and 'youtube-data.so'
+4. Appendix: Building Json-Type, 'youtube-data.so' and
+     'youtube-data-litex.so'
 5. Appendix: Using Shell Function 'youtube-data'
 6. References
 
@@ -90,24 +91,24 @@ required for the well-functioning of the shell functions in 'youtube-data.sh' --
 specifically that of its main one, 'youtube-data'. Youtube-Data's 'bash' shell
 script makes use of the following programs:
 
-  -----------------------------------------------
-               GNU/Linux Power Tools
-  -----------------------------------------------
+  --------------------------------------------------------------------
+                          GNU/Linux Power Tools
+  --------------------------------------------------------------------
    GNU awk 3.1.8
    GNU bash 3.2.51
-   GNU coreutils 8.12 (cat, cut, date, mktemp,
-     rm, sort, tee, tr, truncate, uniq)
+   GNU coreutils 8.12 (cat, cut, date, mktemp, rm, sort, tee, tr,
+     truncate, uniq)
    GNU diffutils 2.8.7 (diff)
    GNU grep 2.7
    GNU wdiff 1.2.1
    GNU wget 1.11.4
    super-sed 3.62 (ssed)
-  -----------------------------------------------
-                Free Software Tools
-  -----------------------------------------------
+  --------------------------------------------------------------------
+                           Free Software Tools
+  --------------------------------------------------------------------
    Cache-DB 0.2 (cache)
-   Json-Type 0.11.0 (json 0.8.8, json.so 0.11.0)
-  -----------------------------------------------
+   Json-Type 0.12.1 (json 0.9.0, json.so 0.12.1, json-litex.so 0.1.1)
+  --------------------------------------------------------------------
 
 The version numbers above indicate which packages and, by case, binaries were
 used developing Youtube-Data.
@@ -125,20 +126,22 @@ needs an additional GNU/Linux tool: GDBM, the GNU Database Manager library.
 For what it concerns Json-Type, the first appendix section below presents in
 details how to obtain the newest Json-Type source release package and how to
 make the required binaries out of that package's source tree. Note that the
-version of Json-Type must be at least 0.11.0.
+version of Json-Type must be at least 0.12.1.
 
-The last prerequisite of Youtube-Data is that of type library 'youtube-data.so'.
+The last prerequisite of Youtube-Data is that of type library 'youtube-data.so'
+and of path library 'youtube-data-litex.so'.
 
 Youtube-Data uses Json-Type for parsing, validating and transforming each JSON
 text is receiving from Google's remote service of *YouTube Data API* [2].
 
 The validation of remote service's JSON response texts is done with the help of
 files '*.json' to be found in the top directory of the source tree. These text
-files contain JSON type definitions in the sense of Json-Type corresponding to
-each YouTube Data API endpoint accessed by 'youtube-data'. Each time the shell
-script 'youtube-data' accesses a certain endpoint, it feeds into 'json' program
-the JSON text received and asks 'json' to validate that according to endpoint's
-corresponding type definition.
+files contain JSON type definitions in the sense of Json-Type and, respectively,
+JSON litex definitions in the sense of Json-Litex, each corresponding to certain
+YouTube Data API endpoint accessed by 'youtube-data'. Each time the shell script
+accesses a certain endpoint, it feeds into 'json' program the JSON text received
+and asks 'json' to validate that according to endpoint's corresponding type and
+litex definitions.
 
 Now, instead of passing to 'json' type definitions in form of JSON text files,
 'youtube-data' may function by passing to 'json' a compiled type library which
@@ -151,8 +154,16 @@ form of the compiled type library 'youtube-data.so', it has nothing more to do
 than simply use that: the library 'youtube-data.so' has all of 'json.so's data
 structures constructed beforehand.
 
+Similarly, instead of providing to 'json' litex definitions in form of JSON text
+files, 'youtube-data' may provide to 'json' the library 'youtube-data-litex.so',
+which encloses all the respective litex definitions in binary form. The compiled
+path library 'youtube-data-litex.so' will make 'youtube-data' run faster. (This
+is so because, when getting litex definitions in form of a compiled path library,
+'json-litex.so' will have all the data structures it needs already constructed.)
+
 The first appendix section below gives all the details for one to build the type
-library 'youtube-data.so' out of the JSON text files '*.json'.
+library 'youtube-data.so' and the path library 'youtube-data-litex.so' out of the
+JSON files contained in the top directory of the source tree.
 
 
 3. Use Cases of Youtube-Data
@@ -367,37 +378,44 @@ wrapped. Specifying though `-w|--wrap[=NUM]' will impose the wrapping behavior:
   ...
 
 
-4. Appendix: Building Json-Type and 'youtube-data.so'
-=====================================================
+4. Appendix: Building Json-Type, 'youtube-data.so' and 'youtube-data-litex.so'
+==============================================================================
 
 This section describes the procedures of obtaining Json-Type's binaries 'json'
-and 'json.so' and Youtube-Data's type library 'youtube-data.so'.
+'json.so' and 'json-litex.so' and Youtube-Data's type library 'youtube-data.so'
+and path library 'youtube-data-litex.so'.
 
-Note that the latter binary is not strictly necessary for the shell function
+Note that 'youtube-data*.so' are not strictly necessary for the shell function
 'youtube-data' in the shell script 'youtube-data.sh' to work OK. However, it's
-recommended for one to actually build it, since having it will significantly
+recommended for one to actually build them, since using them will significantly
 improve the responsiveness of 'youtube-data' at the 'bash' command line prompt.
 
 Not having 'youtube-data.so' at hand, each time called by 'youtube-data', the
-'json' program has to parse the type definitions in some '*.json' file for to
-construct its internal data structures. The library 'youtube-data.so' has all
-these data structures already built-up -- thus making 'json' run faster.
+'json' program (to be accurate: the library 'json.so') has to parse the type
+definitions in some '*.json' file for to construct internal data structures.
+The library 'youtube-data.so' has all these data structures already built-up
+-- thus making 'json' run faster.
 
-For to obtain the Json-Type binaries 'json' and 'json.so' one needs to download
-the latest source release tarball from [4]. Note that the releases of Json-Type
-are signed with GnuPG, therefore upon downloading e.g. version 0.11.0 by means
-of the following two commands:
+Likewise, not having 'youtube-data-litex.so' present, makes the 'json' program
+(i.e. the library 'json-litex.so') run slower, since it will have to construct
+its internal structures from the litex definitions in some '*-litex.json' file.
+The library 'youtube-data-litex.so' contains all these data structures as such.
 
-  $ wget https://download.savannah.gnu.org/releases/json-type/json-type-0.11.0.tar.bz2
+For to obtain the Json-Type binaries 'json', 'json.so' and 'json-litex.so' one
+needs to download the latest source release tarball from [4]. The releases of
+Json-Type are signed with GnuPG, therefore upon downloading e.g. version 0.12.1
+by means of the following two commands:
 
-  $ wget https://download.savannah.gnu.org/releases/json-type/json-type-0.11.0.tar.bz2.sig
+  $ wget https://download.savannah.gnu.org/releases/json-type/json-type-0.12.1.tar.bz2
+
+  $ wget https://download.savannah.gnu.org/releases/json-type/json-type-0.12.1.tar.bz2.sig
 
 one has to issue two instances of 'gpg' program to check the integrity of the
 received tarball (GnuPG FAQ [5]):
 
   $ gpg --recv-keys 3D805B7A
 
-  $ gpg --verify json-type-0.11.0.tar.bz2.sig 
+  $ gpg --verify json-type-0.12.1.tar.bz2.sig 
 
 Of the two commands above, the former imports into the local keyring Json-Type
 author's key, while the latter verifies the package signature -- thus validating
@@ -408,8 +426,9 @@ one must apply the procedure described in the README file to be found in the top
 directory of the source tree.
 
 Upon a successful build, for to make accessible to Youtube-Data the binaries
-obtained -- '$JSON_TYPE_HOME/src/json' and '$JSON_TYPE_HOME/lib/json.so' --,
-one should simply define the following shell function wrapper:
+obtained -- '$JSON_TYPE_HOME/src/json', '$JSON_TYPE_HOME/lib/json.so' and
+'$JSON_TYPE_HOME/lib/json-litex.so' --, one should define the following shell
+function wrapper:
 
   $ json() { local JSON_TYPE_HOME=...; env LD_LIBRARY_PATH="$JSON_TYPE_HOME"/lib "$JSON_TYPE_HOME"/src/json "$@"; }
 
@@ -424,11 +443,15 @@ is more convenient to install the two binaries in the system directories, e.g.:
 
   $ sudo install -t /usr/local/lib "$JSON_TYPE_HOME"/lib/json.so
 
-Now that 'json' and 'json.so' are ready to use, it's time to show the way to
-obtain the shared library 'youtube-data.so'. As a matter of fact will follow
-precisely the steps documented by Json-Type's README file, section 4.d, Make
-a compiled (shared object) type library. The only difference would occur with
-respect to the name of the type library: 'youtube-data' instead of 'jsonrpc'.
+  $ sudo install -t /usr/local/lib "$JSON_TYPE_HOME"/lib/json-litex.so
+
+Now that 'json', 'json.so' and 'json-litex.so' are ready to use, it's time to
+show how to obtain the libraries 'youtube-data.so' and 'youtube-data-litex.so'.
+
+For building 'youtube-data.so', will follow the steps documented by Json-Type's
+README file, subsection 4.d, Make a compiled (shared object) type library. The
+sole difference occurs with respect to the target name: 'youtube-data' instead
+of 'jsonrpc'.
 
 Step 1: obtain 'youtube-data.mk' and 'youtube-data.c' from Json-Type:
 
@@ -470,14 +493,58 @@ use:
 As seen, the library is executable by itself, producing on output the version
 numbers 'x.y.z' of the 'json.so' library that produced it in the first place.
 
-Another immediate use of 'youtube-data.so' would be that of asking 'json' to
+Another immediate use of 'youtube-data.so' would be that of asking 'json.so' to
 verify that it accepts the freshly built library:
 
   $ json -Tc ./youtube-data.so && echo OK
   OK
 
-If this latter command succeeds, the type library 'youtube-data.so' is ready to
-be used by the 'json' program within the shell function 'youtube-data'.
+For building 'youtube-data-litex.so', will follow the exact steps presented in
+'doc/liter-expr.txt', section 4, Json-Litex's Compiled Path Libraries. There is
+only one change applied compared to the original procedure: the target name used
+below is 'youtube-data-litex' instead of 'jsonrpc-litex'.
+
+Step 1: obtain 'youtube-data-litex.mk' and 'youtube-data-litex.c' from Json-Type:
+
+  $ cp "$JSON_TYPE_HOME"/lib/json-litex-module.mk youtube-data-litex.mk
+
+  $ cp "$JSON_TYPE_HOME"/lib/json-litex-module.c youtube-data-litex.c
+
+Step 2: generate 'youtube-data-litex.def' out of '*-litex.json' files using shell
+function 'youtube-data-litex' (already sourced in the current 'bash' environment
+from shell script 'youtube-data.sh'):
+
+  $ youtube-data-litex|json -F -- json-litex.so -D > youtube-data-litex.def
+
+Step 3: make 'youtube-data-litex.so' out of 'youtube-data-litex.{c,def}':
+
+  $ make -f youtube-data-litex.mk
+
+As above, '$JSON_TYPE_HOME' needs to be defined in the current environment prior
+the call to 'make'. If it is not, then pass it in explicitly:
+
+  $ make -f youtube-data-litex.mk JSON_TYPE_HOME=...
+
+If everything went OK -- one should expect to get neither warnings nor errors
+out of 'make' --, the shared library 'youtube-data-litex.so' is ready for its
+first use:
+
+  $ ./youtube-data-litex.so
+  youtube-data-litex.so: litex library version: x.y.z
+
+As seen, the library is executable by itself, producing on output the version
+numbers 'x.y.z' of the 'json-litex.so' library that produced it.
+
+The second immediate use of 'youtube-data-litex.so' is to ask 'json-litex.so' to
+verify that it accepts the freshly built path library:
+
+  $ json -F -- json-litex.so -V ./youtube-data-litex.so && echo OK
+  OK
+
+If the two validations above succeeded -- that of type library 'youtube-data.so'
+against 'json.so' and, respectively, that of path library 'youtube-data-litex.so'
+against 'json-litex.so' --, then these two newly built libraries are ready to be
+used by the 'json' program within the shell function 'youtube-data'.
 
 
 5. Appendix: Using Shell Function 'youtube-data'
@@ -592,8 +659,10 @@ This function is a rich-featured tool, having quite a few command line options:
                                 '+', i.e. $YOUTUBE_DATA_SHORTCUTS)
     -t|--[no-][json-]type     do not type-check resource's JSON object, i.e. do
                                 not pass either of the options `-t $h/*.json' or
-                                `-t $h/youtube-data.so' to 'json', or otherwise
-                                do (default do)
+                                `-t $h/youtube-data.so', and respectively,
+                                neither `-f -- json-litex.so $h/*-litex.json' nor
+                                `-f -- json-litex.so $h/youtube-data-litex.so' to
+                                'json', or otherwise do (default do)
     -u|--unified=NUM          pass `-u NUM' to 'diff' when action is `-D|--diff'
                                 or `-V|--diff-recent'
     -v|--[no-]validate        do not validate resource's parameter values or
@@ -629,7 +698,8 @@ across function 'youtube-wget' too:
   --keep-prev \
   --save-key \
   --url='...'|
-  json --json2 -Vusyp -t "$YOUTUBE_DATA_HOME"/youtube-data.so:videos|
+  json --json2 -Vusyp -t "$YOUTUBE_DATA_HOME"/youtube-data.so:videos -f -- \
+  json-litex.so -p "$YOUTUBE_DATA_HOME"/youtube-data-litex.so:videos -l|
   awk -F '\n' --re-interval '...'
 
 The command line options of 'youtube-wget' are as shown below:
