@@ -1,0 +1,82 @@
+{
+    "kind": "`youtube#videoListResponse`",
+    "etag": "/^\"[a-zA-Z0-9//_-]{55}\"$/",
+    "pageInfo": {
+        "totalResults": "int(32)",
+        "resultsPerPage": "int(32)"
+    },
+    "items": {
+        "kind": "`youtube#video`",
+        "etag": "/^\"[a-zA-Z0-9//_-]{55}\"$/",
+        "snippet": {
+            "publishedAt": "date(iso_8601)",
+            "thumbnails": {
+                "default": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                },
+                "medium": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                },
+                "high": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                },
+                "standard": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                },
+                "maxres": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                }
+            }
+        },
+        "status": {
+            "publishAt": "date(iso_8601)"
+        },
+        "statistics": {
+            "viewCount": "uint(64)",
+            "likeCount": "uint(64)",
+            "dislikeCount": "uint(64)",
+            "favoriteCount": "uint(64)",
+            "commentCount": "uint(64)"
+        },
+        "player": {
+            "embedHeight": "int(64)",
+            "embedWidth": "int(64)"
+        },
+        "recordingDetails": {
+            "recordingDate": "date(iso_8601)"
+        },
+        "fileDetails": {
+            "fileSize": "uint(64)",
+            "videoStreams": {
+                "widthPixels": "uint(32)",
+                "heightPixels": "uint(32)",
+                "bitrateBps": "uint(64)"
+            },
+            "audioStreams": {
+                "channelCount": "uint(32)",
+                "bitrateBps": "uint(64)"
+            },
+            "durationMs": "uint(64)",
+            "bitrateBps": "uint(64)"
+        },
+        "processingDetails": {
+            "processingProgress": {
+                "partsTotal": "uint(64)",
+                "partsProcessed": "uint(64)",
+                "timeLeftMs": "uint(64)"
+            }
+        },
+        "liveStreamingDetails": {
+            "actualStartTime": "date(iso_8601)",
+            "actualEndTime": "date(iso_8601)",
+            "scheduledStartTime": "date(iso_8601)",
+            "scheduledEndTime": "date(iso_8601)",
+            "concurrentViewers": "uint(64)"
+        }
+    }
+}

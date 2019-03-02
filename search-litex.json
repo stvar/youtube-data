@@ -1,0 +1,37 @@
+{
+    "kind": "`youtube#searchListResponse`",
+    "etag": "/^\"[a-zA-Z0-9//_-]{55}\"$/",
+    "pageInfo": {
+        "totalResults": "int(32)",
+        "resultsPerPage": "int(32)"
+    },
+    "items": {
+        "kind": "`youtube#searchResult`",
+        "etag": "/^\"[a-zA-Z0-9//_-]{55}\"$/",
+        "snippet": {
+            "publishedAt": "date(iso_8601)",
+            "thumbnails": {
+                "default": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                },
+                "medium": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                },
+                "high": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                },
+                "standard": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                },
+                "maxres": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                }
+            }
+        }
+    }
+}

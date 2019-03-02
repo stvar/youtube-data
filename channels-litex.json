@@ -1,0 +1,50 @@
+{
+    "kind": "`youtube#channelListResponse`",
+    "etag": "/^\"[a-zA-Z0-9//_-]{55}\"$/",
+    "pageInfo": {
+        "totalResults": "int(32)",
+        "resultsPerPage": "int(32)"
+    },
+    "items": {
+        "kind": "`youtube#channel`",
+        "etag": "/^\"[a-zA-Z0-9//_-]{55}\"$/",
+        "snippet": {
+            "publishedAt": "date(iso_8601)",
+            "thumbnails": {
+                "default": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                },
+                "medium": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                },
+                "high": {
+                    "width": "uint(32)",
+                    "height": "uint(32)"
+                }
+            }
+        },
+        "statistics": {
+            "viewCount": "uint(64)",
+            "commentCount": "uint(64)",
+            "subscriberCount": "uint(64)",
+            "videoCount": "uint(64)"
+        },
+        "invideoPromotion": {
+            "defaultTiming": {
+                "offsetMs": "uint(64)",
+                "durationMs": "uint(64)"
+            },
+            "items": {
+                "timing": {
+                    "offsetMs": "uint(64)",
+                    "durationMs": "uint(64)"
+                }
+            }
+        },
+        "contentOwnerDetails": {
+            "timeLinked": "date(iso_8601)"
+        }
+    }
+}
