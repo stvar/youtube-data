@@ -914,7 +914,7 @@ youtube-data()
     local q=""          # be quiet: when action is `-J|--json' do not print out the output file name (--quiet)
     local r="channel"   # resource's type: 'channel', 'playlist' or 'video' (default: 'channel'); INPUT is either a file name or an id (default), determined by `--file' or `--id'; when INPUT terminates with '.json', consider it to be file name; when INPUT ends with '{,-playlists,-videos}.json', set the linked type accordingly (--channel[=INPUT]|--playlist[=INPUT]|--video[=INPUT])
     local s="+"         # channel and playlist shortcuts file name (default: '+', i.e. $YOUTUBE_DATA_SHORTCUTS) (--shortcuts=FILE)
-    local t=""          # do not type-check resource's JSON object, i.e. do not pass either of the options `-t $h/*.json' or `-t $h/youtube-data.so' to 'json', or otherwise do (default do) (--[no-][json-]type)
+    local t=""          # do not type-check resource's JSON object, i.e. do not pass either of the options `-t $h/*.json' or `-t $h/youtube-data.so', and respectively, neither `-f -- json-litex.so $h/*-litex.json' nor `-f -- json-litex.so $h/youtube-data-litex.so' to 'json', or otherwise do (default do) (--[no-][json-]type)
     local u=""          # pass `-u NUM' to 'diff' when action is `-D|--diff' or `-V|--diff-recent' (--unified=NUM)
     local v=""          # do not validate resource's parameter values or otherwise do (default do) (--[no-]validate)
     local w=""          # wrap 'title' and 'description' texts when output is of type 'list' or otherwise do not (default: do not for `-P' and do for `-V'; NUM must be >= 13; its default value is 72) (--wrap[-text][=NUM]|--no-wrap[-text])
@@ -1989,14 +1989,17 @@ ssed -Ru '
         b=''
     }
 
+    local T=''
     [ -n "$t" ] && {
         local t2
+        local T2=''
         case "$r:$l" in
             @(channel|playlist|video):itself)
                 t2="${r}s"
                 ;;
             channel:@(playlists|videos))
                 t2="search-$l"
+                T2='search'
                 ;;
             playlist:videos)
                 t2="$r-items"
@@ -2016,6 +2019,19 @@ ssed -Ru '
         }
         [ "$t" == "$t4" ] &&
         t+=":$t2"
+
+        test -z "$T2" && T2="$t2"
+        local T3="${h}$T2-litex.json"
+        local T4="${h:-./}$self-litex.so"
+        [ "$T3" -nt "$T4" ] &&
+        T="$T3" ||
+        T="$T4"
+        [ ! -f "$T" ] && {
+            error "json path-lib '$T' not found"
+            return  1
+        }
+        [ "$T" == "$T4" ] &&
+        T+=":$T2"
     }
 
     [ "$act" == 'J' -a "$o" != '-' ] && {
@@ -2662,6 +2678,7 @@ ssed -Ru '
             esac
             quote h
             quote t
+            quote T
 
             local b2="$b"
             [ "$b2" == '++' ] && b2=''
@@ -2706,10 +2723,13 @@ true
         [ -n "$u2" ] &&
         [[ "$act" != [HI] ]] && [ "$act" != 'J' -o -n "$t" ] && c2+=$'|\n'
         [[ "$act" != [HI] ]] && [ "$act" != 'J' -o -n "$t" ] && c2+="\
-json --$j -Vusyp$j2${t:+ -t $t}"
+json --$j -Vusyp$j2${t:+ -t $t}${T:+ -f}"
         # [ -z "$u2" ] <=> [[ "$act" == [SP] ]] && [ "$i" == 'file' ]
         [ -z "$u2" -a "$i2" != '-' ] && c2+=" \\
 $i2"
+        [[ "$act" != [HI] ]] && [ "$act" != 'J' -o -n "$t" ] && [ -n "$T" ] && c2+="\
+ -- \\
+json-litex.so -p $T -l"
         [ "$act" == 'J' -a "$o" == '-' -a -n "$o2" -a "$o2" != '-' ] && {
             c2+=" >${e2:+>} \\
 $o2"
