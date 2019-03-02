@@ -435,7 +435,7 @@ function wrapper:
 where '$JSON_TYPE_HOME' points to the top directory of Json-Type's source tree.
 
 Instead of defining the 'json' shell function each time using Youtube-Data, it
-is more convenient to install the two binaries in the system directories, e.g.:
+is more convenient to install the three binaries in the system directories, e.g.:
 
   $ export JSON_TYPE_HOME=...
 
