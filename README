@@ -100,9 +100,9 @@ script makes use of the following programs:
      truncate, uniq)
    GNU diffutils 2.8.7 (diff)
    GNU grep 2.7
+   GNU sed 4.1.5
    GNU wdiff 1.2.1
    GNU wget 1.11.4
-   super-sed 3.62 (ssed)
   --------------------------------------------------------------------
                            Free Software Tools
   --------------------------------------------------------------------
@@ -114,10 +114,7 @@ The version numbers above indicate which packages and, by case, binaries were
 used developing Youtube-Data.
 
 Any mainstream GNU/Linux installation includes all the above GNU/Linux power
-tools -- maybe with the exception of Super-sed. If one is not able to find a
-Super-sed binary package for his setup, he must build it from sources [6].
-
-The last two programs listed above -- Cache-DB and Json-Type [3] -- must be
+tools. The last two tools listed above -- Cache-DB and Json-Type [3] -- must be
 build from their sources. Cache-DB's source tree is included within the source
 tree of Youtube-Data in 'tools/cache-db' directory. Building Cache-DB is easy,
 as per the instructions in 'tools/cache-db/README'. Note that Cache-DB itself
@@ -762,10 +759,5 @@ for to achieve its duties.
 
 [5] GnuPG FAQ: How can I use GnuPG to verify a file I've downloaded?
     https://www.gnupg.org/faq/gnupg-faq.html#how_do_i_verify_signed_packages
-
-[6] Super-sed
-    http://sed.sourceforge.net/grabbag/ssed/
-
-    http://sed.sourceforge.net/grabbag/ssed/sed-3.62.tar.gz
 
 
