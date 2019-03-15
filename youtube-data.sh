@@ -48,7 +48,7 @@ export YOUTUBE_WGET_TEE_EXIT_NOPIPE
 
 usage()
 {
-    echo "usage: $1 [$(ssed 's/^://;s/-:$/\x0/;s/[^:]/|-\0/g;s/:/ <arg>/g;s/^|//;s/\x0/-<long>/' <<< "$2")]"
+    echo "usage: $1 [$(sed 's/^://;s/-:$/\x0/;s/[^:]/|-\0/g;s/:/ <arg>/g;s/^|//;s/\x0/-<long>/' <<< "$2")]"
 }
 
 quote()
@@ -88,7 +88,7 @@ quote2()
 
     printf -v __n__ '%q' "$1"
     eval __v__="\"\$$__n__\""
-    __v__="$(ssed -nR '
+    __v__="$(sed -nr '
         H
         $!b
         g
@@ -690,8 +690,8 @@ youtube-wget()
 
     [[ ( -z "$c" && "$s" =~ $urex ) || \
        ( -n "$c" && "$s" =~ $lrex ) ]] || {
-        local s2="$(ssed -nR 'H;$!b;g;s/^\n//;l1024' <<< "$s"|
-                    ssed -nR 's/\$$//;H;$!b;g;s/\n//g;p')"
+        local s2="$(sed -nr 'H;$!b;g;s/^\n//;l1024' <<< "$s"|
+                    sed -nr 's/\$$//;H;$!b;g;s/\n//g;p')"
         error "cache returned unexpected result '${s2:-$s}' on key '$k2'"
         return 1
     }
@@ -1465,9 +1465,9 @@ youtube-data()
         local n2
         local i3
         local i4
-        i3=($(ssed -nR 's/^('"[^\s]*${i2:1}"'[^\s]*)\s+([a-zA-Z90-9_-]+)\s*$/\1\t\2/Ip' "$s"|
+        i3=($(sed -nr 's/^('"[^\s]*${i2:1}"'[^\s]*)\s+([a-zA-Z90-9_-]+)\s*$/\1\t\2/Ip' "$s"|
               sort -t $'\t' -k2,2 -u)) && [ "$((${#i3[@]} % 2))" -eq 0 ] || {
-            error "inner command failed: ssed [0]"
+            error "inner command failed: sed [0]"
             return 1
         }
         [ "${#i3[@]}" -eq 0 ] && {
@@ -1742,7 +1742,7 @@ wdiff -n \\"
             [ "$V3" == 'w' ] && c2+=$'\n'
             c2+="$c4"
             [ "$V3" == 'd' ] && c2+="|
-ssed -Ru '
+sed -ru '
     1,3d"
             [ "$V3" == 'd' -a -n "$n" ] && c2+="
     s/^ //;t
@@ -1820,8 +1820,8 @@ ssed -Ru '
         #!!! echo >&2 "!!! arg='$arg' P2='$P2'"
 
         if [ "$P2" == '?' ]; then
-            ssed -R 's/[A-Z]/-\L\0\E/g;s/ +/\n/g' <<< "$P" || {
-                error "internal: inner command failed: ssed [1]"
+            sed -r 's/[A-Z]/-\L\0\E/g;s/ +/\n/g' <<< "$P" || {
+                error "internal: inner command failed: sed [1]"
                 return 1
             }
             return 0
@@ -1861,8 +1861,8 @@ ssed -Ru '
                 }'
 
             local P3=''
-            P3="$(ssed -R 's/[A-Z]/-\L\0\E/g' <<< "$P")" && [ -n "$P3" ] || {
-                error "internal: inner command failed: ssed [2]"
+            P3="$(sed -r 's/[A-Z]/-\L\0\E/g' <<< "$P")" && [ -n "$P3" ] || {
+                error "internal: inner command failed: sed [2]"
                 return 1
             }
 
@@ -1891,9 +1891,9 @@ ssed -Ru '
                 return 1
             }
 
-            P="$(ssed -R 's/-([a-z])/\U\1\E/g;s/,/ /g' <<< "$P2")" &&
+            P="$(sed -r 's/-([a-z])/\U\1\E/g;s/,/ /g' <<< "$P2")" &&
                 [ -n "$P" ] || {
-                error "internal: inner command failed: ssed [3]"
+                error "internal: inner command failed: sed [3]"
                 return 1
             }
         fi
@@ -2816,8 +2816,8 @@ awk -F '\t' '$s4'"
             exit 1
         }'
         [[ "$act" == [H] ]] && c2+='
-        h="$(ssed -nR '\''1{/^[-+!]('"$hrex"')(?::'"$hrex"')?$/!q;s//\1/;p;q}'\'' "$t")" && [ -n "$h" ] || {
-            error "inner command failed: ssed"'
+        h="$(sed -nr '\''1{/^[-+!]('"$hrex"')(:'"$hrex"')?$/!q;s//\1/;p;q}'\'' "$t")" && [ -n "$h" ] || {
+            error "inner command failed: sed"'
         [[ "$act" == [IU] ]] && c2+='
         h="$(cut -f2 "$t")" && [ -n "$h" ] || {
             error "inner command failed: cut"'
@@ -2827,8 +2827,8 @@ awk -F '\t' '$s4'"
         # stev: note that 'json's option `-b256' below makes
         # the encompassing loop work significantly faster
         c2+='
-        p="$(json -Jusp -b256 '"$t3"'|ssed -nR '\''/^\/nextPageToken=/{s//@/;p;q}'\'')" || {
-            error "inner command failed: json|ssed"'
+        p="$(json -Jusp -b256 '"$t3"'|sed -nr '\''/^\/nextPageToken=/{s//@/;p;q}'\'')" || {
+            error "inner command failed: json|sed"'
         [ "$act" == 'J' -a "$o" != '-' ] &&
         c2+='
             rm -f -- '"$o"
@@ -2860,9 +2860,9 @@ $c0 --$r --$l --file=- --"
         if [ "$act" == 'S' ]; then
             c2+='json2'
         elif [[ "$arg" == $prtx ]]; then
-            P="$(ssed -R 's/[A-Z]/-\L\0\E/g;s/ /,/g' <<< "$P")" &&
+            P="$(sed -r 's/[A-Z]/-\L\0\E/g;s/ /,/g' <<< "$P")" &&
                 [ -n "$P" ] || {
-                error "internal: inner command failed: ssed [4]"
+                error "internal: inner command failed: sed [4]"
                 return 1
             }
             c2+="$arg=$P"
@@ -2917,7 +2917,7 @@ youtube-data-json()
         echo -ne '\t{\n'
         echo -ne '\t\t"name": "'$n'",\n'
         echo -ne '\t\t"type": '
-        ssed -Re '2,$s/^/\t\t/' $n.json
+        sed -re '2,$s/^/\t\t/' $n.json
         [ $((-- k)) -gt 0 ] &&
         echo -ne '\t},\n' ||
         echo -ne '\t}\n'
@@ -2942,7 +2942,7 @@ youtube-data-litex()
     do
         [ $((-- k)) -eq 0 ] && k=''
         echo -ne '\t"'$n'": '
-        ssed -Re '2,$s/^/\t/'"${k:+;\$s/$/,/}" \
+        sed -re '2,$s/^/\t/'"${k:+;\$s/$/,/}" \
         $n-litex.json
     done
 
