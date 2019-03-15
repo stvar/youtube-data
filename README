@@ -378,7 +378,7 @@ wrapped. Specifying though `-w|--wrap[=NUM]' will impose the wrapping behavior:
 4. Appendix: Building Json-Type, 'youtube-data.so' and 'youtube-data-litex.so'
 ==============================================================================
 
-This section describes the procedures of obtaining Json-Type's binaries 'json'
+This section describes the procedures of obtaining Json-Type's binaries 'json',
 'json.so' and 'json-litex.so' and Youtube-Data's type library 'youtube-data.so'
 and path library 'youtube-data-litex.so'.
 
