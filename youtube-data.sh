@@ -1277,7 +1277,7 @@ youtube-data()
                 optarg
                 ;;
             p)	[[ "$OPTARG" == [-+] ]] ||
-                [[ "$OPTARG" == \@+([0-9a-zA-Z]) ]] ||
+                [[ "$OPTARG" == \@+([0-9a-zA-Z_-]) ]] ||
                 [[ "$OPTARG" == \++([0-9]) && \
                    "${OPTARG:1}" -gt 0 ]] || {
                     error --long -i
