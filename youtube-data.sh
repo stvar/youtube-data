@@ -1501,6 +1501,9 @@ youtube-data()
             esac
         fi
         i2="$i3"
+
+        [ "$YOUTUBE_DATA_DEBUG_ARG" == 'yes' ] &&
+        echo >&2 "!!! r='$r' l='$l' i='$i' i2='$i2'"
     }
 
     case "$r:$l" in
