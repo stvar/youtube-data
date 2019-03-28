@@ -1374,18 +1374,6 @@ youtube-data()
     # each of the component commands succeeded!
     set -o pipefail
 
-    case "$r:$l" in
-        @(channel|playlist|video):itself)
-            ;;
-        channel:@(playlists|videos))
-            ;;
-        playlist:videos)
-            ;;
-        *)	error "'$r' resources cannot be linked to '${l%s}' ones"
-            return 1
-            ;;
-    esac
-
     [ "$i" == '+' ] && i='id'
 
     local i2="${i#*=}"
@@ -1514,6 +1502,18 @@ youtube-data()
         fi
         i2="$i3"
     }
+
+    case "$r:$l" in
+        @(channel|playlist|video):itself)
+            ;;
+        channel:@($chnx))
+            ;;
+        playlist:videos)
+            ;;
+        *)	error "'$r' resources cannot be queried for '$l'"
+            return 1
+            ;;
+    esac
 
     local c0=''
     local c2=''
