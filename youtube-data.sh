@@ -455,7 +455,7 @@ youtube-wget()
     local opt
     local OPT
     local OPTN
-    local opts=":acdegh:HIklOt:u:w:x-:"
+    local opts=":a:cdegh:HIklOt:u:w:x-:"
     local OPTARG
     local OPTERR=0
     local OPTIND=1
