@@ -540,7 +540,7 @@ youtube-wget()
                         error --long -d
                         return 1
                     }
-                elif [ -z "$OPT" -o -z "$OPTN" ]; then
+                elif [ -n "$OPT" -a -z "$OPTN" ]; then
                     OPTARG='+'
                 elif [[ "$OPTARG" != +([0-9]) ]]; then
                     error --long -i
