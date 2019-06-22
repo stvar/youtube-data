@@ -721,8 +721,8 @@ The command line options of 'youtube-wget' are as shown below:
     -O|--action=content         produce content -- 'wget' may be implied (default)
                                   
   options:
-    -a|--hash-age[=NUM]         pass `--hash-age[=NUM]' to 'cache' when action is
-       --no-hash-age              `-I' or otherwise do not (default not)
+    -a:|--hash-age[=NUM]        pass `--hash-age[=NUM]' to 'cache' when action is
+        --no-hash-age             `-I' or otherwise do not (default not)
     -c|--[no-]cache-only        use only locally cached files when action is not
                                   `-I' or otherwise do not (default not)
     -e|--[no-]save-key          pass `--save-key' to 'cache' when action is not
