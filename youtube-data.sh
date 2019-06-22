@@ -782,7 +782,8 @@ $wget \\
 --output-document=$o2${e:+.1} \\"
         [   \( "$act" == 'O' -a "$O" == '-' -a -n "$n" \) ] && c2+="
 --output-document=- \\"
-        c2+="${l:+
+        c2+="
+--content-on-error \\${l:+
 --append-output=$l \\}
 '$u'"
         # stev: when $act is 'H', pass on the output '^[-+!]$hrex(:$hrex)$' of $c0
@@ -2726,6 +2727,8 @@ youtube-wget \\"
 --no-check-certif \\"
             [[ "$act" != [HI] ]] && c2+="
 --output-document=$o \\"
+            [[ "$act" != 'I' && "$c" == '-' ]] && c2+="
+--content-on-error \\"
             [[ "$act" != 'I' ]] && c2+="
 --user-agent=$a \\${k:+
 --header='Cookie: $k' \\}"
