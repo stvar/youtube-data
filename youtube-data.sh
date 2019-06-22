@@ -19,6 +19,9 @@
 
 shopt -s extglob
 
+[ -z "$YOUTUBE_WGET" ] &&
+export YOUTUBE_WGET='wget'
+
 [ -z "$YOUTUBE_DATA_HOME" ] &&
 export YOUTUBE_DATA_HOME="$HOME/youtube-data"
 
@@ -397,6 +400,7 @@ error()
 youtube-wget()
 {
     local self="youtube-wget"
+    local wget="$YOUTUBE_WGET"
     local opt0='debug quiet no-check-certif'
     local opt1='header connect-timeout output-document user-agent'
     local optx="@(${opt0// /|}|${opt1// /|})"
@@ -767,7 +771,7 @@ $O"
 (
 cd $h.cache &&"$'\n'
         c2+=${c2:+$'\n'}"\
-wget \\
+$wget \\
 --$q \\${wget_debug:+
 --debug \\}${wget_no_check_certif:+
 --no-check-certificate \\}${wget_user_agent:+
@@ -810,6 +814,7 @@ $O"
 youtube-data()
 {
     local self="youtube-data"
+    local wget="$YOUTUBE_WGET"
     local tmpf="/tmp/$self.XXX"
     local yurl='https://www.googleapis.com/youtube/v3/'
     local yitm='/items'
@@ -2711,7 +2716,7 @@ sed -ru '
 
             [[ "$act" != 'I' && "$c" == '-' ]] && c2+="\
 ""{
-wget \\"
+$wget \\"
             [[ "$act" == 'I' || "$c" != '-' ]] && c2+="\
 youtube-wget \\"
             [[ "$act" != 'I' && "$c" == '-' ]] && c2+="
