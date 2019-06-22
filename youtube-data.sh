@@ -863,7 +863,7 @@ youtube-data()
     local prex="$yprx*(,$yprx)"
     local drex='^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]+Z$'
     local trex='^PT([0-9]+H)?([0-9]{1,2}M)?([0-9]{1,2}S)?$'
-    local lrex='^PL([0-9a-zA-Z_-]{32}|[0-9A-F]{16})$|^(LL|UU)[0-9a-zA-Z_-]{22}$'
+    local lrex='^PL([0-9a-zA-Z_-]{32}|[0-9A-F]{16})$|^(LL|UU)[0-9a-zA-Z_-]{22}$|OL[0-9a-zA-Z_-]{39}'
     local crex='^UC[0-9a-zA-Z_-]{22}$'
     local vrex='^[0-9a-zA-Z_-]{11}$'
     local hrex='[0-9a-f]{8}'
@@ -1492,7 +1492,8 @@ youtube-data()
             i4=''
             case "${i3:0:2}" in
                 UC) [ "$r" == 'channel' ]  || i4='channel' ;;
-                PL) [ "$r" == 'playlist' ] || i4='playlist' ;;
+                [OP]L)
+                    [ "$r" == 'playlist' ] || i4='playlist' ;;
             esac
             [ -n "$i4" ] && {
                 error "shortcut '$i2' is not a $r but a $i4"
@@ -1501,7 +1502,8 @@ youtube-data()
         else
             case "${i3:0:2}" in
                 UC) r='channel' ;;
-                PL) r='playlist' ;;
+                [OP]L)
+                    r='playlist' ;;
             esac
         fi
         i2="$i3"
