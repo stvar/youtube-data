@@ -649,6 +649,9 @@ youtube-wget()
         error "invalid \$YOUTUBE_WGET_TEE_EXIT_NOPIPE='$n'"
         return 1
     }
+    local n2
+    # $n2 is the reverse of $n
+    [ -z "$n" ] && n2='n' || n2=''
 
     local c0="$C -h $h.cache"
     local c2="$c0"
@@ -732,7 +735,7 @@ $O"
     c2=''
     [[ -n "$r" || "$p" == '-' ]] && {
         [ -n "$e" ] &&
-        c0+=" -t $t${g:+ -lvv} -f $o2.1${k:+ --keep-prev} --save-key -U '$k3'" ||
+        c0+=" -t $t${g:+ -lvv}${n2:+ -f $o2.1}${k:+ --keep-prev} --save-key -U '$k3'" ||
         c0=''
 
         [ -n "$l" ] && {
@@ -783,11 +786,12 @@ $wget \\
 $c0"
         # stev: when $act is 'O', ignore the output of $c0
         [ "$act" == 'O' -a -n "$e" ] && c2+=' >/dev/null'
-        [ -n "$e" ] && c2+="
+        [ -n "$e" -a -n "$n2" ] && c2+="
 
 e=\$?
 rm -f $o2.1
-exit \$e
+exit \$e"
+        [ -n "$e" ] && c2+="
 "")"
     }
     # stev: when $act is 'H' and $c2 doesn't include $c0, print out '^[-+!]$hrex(:$hrex)$' from $s
