@@ -2413,9 +2413,11 @@ sed -ru '
                 function error(s)
                 {
                     printf("'"$self"': error: #%d: %s\n", FNR, s) \
-                        > "/dev/stderr"
+                        > "/dev/stderr"'
+            [ -z "$v" ] && s3+='
                     input_error = 1
-                    exit 1
+                    exit 1'
+            s3+='
                 }'
             [ -z "$v" -o \( -n "$b" -a -n "$published_at" \) ] && s3+='
 
