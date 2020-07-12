@@ -2440,10 +2440,10 @@ sed -ru '
                         s = gensub(/^[[:space:]]+|[[:space:]]+$/, "", "g", s)
                     else
                     if (and(w, TRIM_LEFT))
-                        s = gensub(/^[[:space:]]+/, "", "", s)
+                        s = gensub(/^[[:space:]]+/, "", 1, s)
                     else
                     if (and(w, TRIM_RIGHT))
-                        s = gensub(/[[:space:]]+$/, "", "", s)
+                        s = gensub(/[[:space:]]+$/, "", 1, s)
                     if (and(w, TRIM_INSIDE))
                         s = gensub(/[[:space:]]+/, " ", "g", s)
                     return s
