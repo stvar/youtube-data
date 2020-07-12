@@ -862,9 +862,9 @@ youtube-data()
     local ymax='&maxResults=%s'
     local ypgt='&pageToken=%s'
     local prex="$yprx*(,$yprx)"
-    local drex='^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]+Z$'
+    local drex='^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?Z$'
     local trex='^PT([0-9]+H)?([0-9]{1,2}M)?([0-9]{1,2}S)?$'
-    local lrex='^PL([0-9a-zA-Z_-]{32}|[0-9A-F]{16})$|^(LL|UU)[0-9a-zA-Z_-]{22}$|OL[0-9a-zA-Z_-]{39}'
+    local lrex='^PL([0-9a-zA-Z_-]{32}|[0-9A-F]{16})$|^(LL|UU)[0-9a-zA-Z_-]{22}$|^OL[0-9a-zA-Z_-]{39}$|^RD[0-9a-zA-Z_-]{13,}$'
     local crex='^UC[0-9a-zA-Z_-]{22}$'
     local vrex='^[0-9a-zA-Z_-]{11}$'
     local hrex='[0-9a-f]{8}'
