@@ -1,15 +1,15 @@
 {
     "kind": "`youtube#channelListResponse`",
-    "etag": "/^\"[a-zA-Z0-9//_-]{55}\"$/",
+    "etag": "/^(?:\"[a-zA-Z0-9//_-]{55}\"|[a-zA-Z0-9//_-]{27})$/",
     "pageInfo": {
         "totalResults": "int(32)",
         "resultsPerPage": "int(32)"
     },
     "items": {
         "kind": "`youtube#channel`",
-        "etag": "/^\"[a-zA-Z0-9//_-]{55}\"$/",
+        "etag": "/^(?:\"[a-zA-Z0-9//_-]{55}\"|[a-zA-Z0-9//_-]{27})$/",
         "snippet": {
-            "publishedAt": "date(iso_8601)",
+            "publishedAt": "date(`%Y-%m-%dT%H:%M:%SZ`) || date(`%Y-%m-%dT%H:%M:%S.%NZ`)",
             "thumbnails": {
                 "default": {
                     "width": "uint(32)",
@@ -44,7 +44,7 @@
             }
         },
         "contentOwnerDetails": {
-            "timeLinked": "date(iso_8601)"
+            "timeLinked": "date(`%Y-%m-%dT%H:%M:%SZ`) || date(`%Y-%m-%dT%H:%M:%S.%NZ`)"
         }
     }
 }

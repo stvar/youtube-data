@@ -1,15 +1,15 @@
 {
     "kind": "`youtube#videoListResponse`",
-    "etag": "/^\"[a-zA-Z0-9//_-]{55}\"$/",
+    "etag": "/^(?:\"[a-zA-Z0-9//_-]{55}\"|[a-zA-Z0-9//_-]{27})$/",
     "pageInfo": {
         "totalResults": "int(32)",
         "resultsPerPage": "int(32)"
     },
     "items": {
         "kind": "`youtube#video`",
-        "etag": "/^\"[a-zA-Z0-9//_-]{55}\"$/",
+        "etag": "/^(?:\"[a-zA-Z0-9//_-]{55}\"|[a-zA-Z0-9//_-]{27})$/",
         "snippet": {
-            "publishedAt": "date(iso_8601)",
+            "publishedAt": "date(`%Y-%m-%dT%H:%M:%SZ`) || date(`%Y-%m-%dT%H:%M:%S.%NZ`)",
             "thumbnails": {
                 "default": {
                     "width": "uint(32)",
@@ -34,7 +34,7 @@
             }
         },
         "status": {
-            "publishAt": "date(iso_8601)"
+            "publishAt": "date(`%Y-%m-%dT%H:%M:%SZ`) || date(`%Y-%m-%dT%H:%M:%S.%NZ`)"
         },
         "statistics": {
             "viewCount": "uint(64)",
@@ -48,7 +48,7 @@
             "embedWidth": "int(64)"
         },
         "recordingDetails": {
-            "recordingDate": "date(iso_8601)"
+            "recordingDate": "date(`%Y-%m-%dT%H:%M:%SZ`) || date(`%Y-%m-%dT%H:%M:%S.%NZ`)"
         },
         "fileDetails": {
             "fileSize": "uint(64)",
@@ -72,10 +72,10 @@
             }
         },
         "liveStreamingDetails": {
-            "actualStartTime": "date(iso_8601)",
-            "actualEndTime": "date(iso_8601)",
-            "scheduledStartTime": "date(iso_8601)",
-            "scheduledEndTime": "date(iso_8601)",
+            "actualStartTime": "date(`%Y-%m-%dT%H:%M:%SZ`) || date(`%Y-%m-%dT%H:%M:%S.%NZ`)",
+            "actualEndTime": "date(`%Y-%m-%dT%H:%M:%SZ`) || date(`%Y-%m-%dT%H:%M:%S.%NZ`)",
+            "scheduledStartTime": "date(`%Y-%m-%dT%H:%M:%SZ`) || date(`%Y-%m-%dT%H:%M:%S.%NZ`)",
+            "scheduledEndTime": "date(`%Y-%m-%dT%H:%M:%SZ`) || date(`%Y-%m-%dT%H:%M:%S.%NZ`)",
             "concurrentViewers": "uint(64)"
         }
     }
