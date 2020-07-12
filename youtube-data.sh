@@ -38,15 +38,6 @@ export YOUTUBE_DATA_SHORTCUTS="$YOUTUBE_DATA_HOME/.shortcuts"
 export YOUTUBE_DATA_CACHE_THRESHOLD='16h'
 
 YOUTUBE_WGET_TEE_EXIT_NOPIPE=''
-[ "$(tee --help|
-        grep --color=none -owe 'exit-nopipe'|sort -u)" == 'exit-nopipe' ] && {
-    YOUTUBE_WGET_TEE_EXIT_NOPIPE="$(
-        tee --help|
-            grep --color=none -owe '--(write|output)-error' -E|sort -u)"
-    [[ "$YOUTUBE_WGET_TEE_EXIT_NOPIPE" == --@(write|output)-error ]] &&
-    YOUTUBE_WGET_TEE_EXIT_NOPIPE+='=exit-nopipe' ||
-    YOUTUBE_WGET_TEE_EXIT_NOPIPE=''
-}
 export YOUTUBE_WGET_TEE_EXIT_NOPIPE
 
 usage()
