@@ -617,6 +617,14 @@
                                     {
                                         "name": "publicStatsViewable",
                                         "type": "boolean"
+                                    },
+                                    {
+                                        "name": "madeForKids",
+                                        "type": "boolean"
+                                    },
+                                    {
+                                        "name": "selfDeclaredMadeForKids",
+                                        "type": "boolean"
                                     }
                                 ]
                             }
@@ -703,30 +711,6 @@
                             "type": {
                                 "type": "dict",
                                 "args": [
-                                    {
-                                        "name": "locationDescription",
-                                        "type": "string"
-                                    },
-                                    {
-                                        "name": "location",
-                                        "type": {
-                                            "type": "dict",
-                                            "args": [
-                                                {
-                                                    "name": "latitude",
-                                                    "type": "number"
-                                                },
-                                                {
-                                                    "name": "longitude",
-                                                    "type": "number"
-                                                },
-                                                {
-                                                    "name": "altitude",
-                                                    "type": "number"
-                                                }
-                                            ]
-                                        }
-                                    },
                                     {
                                         "name": "recordingDate",
                                         "type": "string"

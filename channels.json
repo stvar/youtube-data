@@ -275,6 +275,14 @@
                                     {
                                         "name": "longUploadsStatus",
                                         "type": "string"
+                                    },
+                                    {
+                                        "name": "madeForKids",
+                                        "type": "boolean"
+                                    },
+                                    {
+                                        "name": "selfDeclaredMadeForKids",
+                                        "type": "boolean"
                                     }
                                 ]
                             }
