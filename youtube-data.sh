@@ -1458,7 +1458,7 @@ youtube-data()
         local n2
         local i3
         local i4
-        i3=($(sed -nr 's/^('"[^\s]*${i2:1}"'[^\s]*)\s+([a-zA-Z90-9_-]+)\s*$/\1\t\2/Ip' "$s"|
+        i3=($(sed -nr 's/^('"[^\s]*${i2:1}"'[^\s]*)\s+([a-zA-Z0-9_-]+)\s*$/\1\t\2/Ip' "$s"|
               sort -t $'\t' -k2,2 -u)) && [ "$((${#i3[@]} % 2))" -eq 0 ] || {
             error "inner command failed: sed [0]"
             return 1
