@@ -1287,7 +1287,7 @@ youtube-data()
                         return 1
                     }
                     [[ -z "$OPT" &&
-                        "$OPTARG" == @([-+]|++) ||
+                        "$OPTARG" == [-+!] ||
                         "$OPTARG" == $alux ]] || {
                         error --long -i
                         return 1
