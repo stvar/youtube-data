@@ -877,7 +877,7 @@ youtube-data()
     local intx='@(file|id)'
     local inta="$resa"
     local cacx='@([-+~#=!]|previous|local|current|auto|refresh)'
-    local colx='@(always|auto)'
+    local alux='@(always|auto)'
     local recx='@(show|diff|wdiff)-@(recent|uploads)'
     local reca="$resa"
     # stev: 2 + max of length of each text parameter names:
@@ -910,7 +910,7 @@ youtube-data()
     local k=""          # header cookie to be passed to 'wget'; when '+' take the cookie from $YOUTUBE_DATA_COOKIE (--[header-]cookie=STR)
     local l="itself"    # linked resource's type: 'itself', 'playlists', 'videos' or 'uploads' (default: 'itself') (--itself|--playlists|--videos|--uploads)
     local m="+"         # max results per API query (value in [1..50], default: 50) (--[max-]results=NUM)
-    local n=""          # colorize the output produced by `--list' and `--[w]diff-{recent,uploads}', or otherwise do not (default: do not for `-P' and 'auto' for `-V' and `-D', i.e. color only if stdout is a terminal) (--color=always|auto|--no-color)
+    local n=""          # colorize the output produced by `--list' and `--[w]diff-{recent,uploads}' as specified, or otherwise do not; the short option `-n' accepts shortcut arguments too: '-', '+' and '!' for `--no-color', `-n auto' and `-n always' respectively (default: do not for `-P' and 'auto' for `-V' and `-D', i.e. color only if stdout is a terminal) (--color=always|auto|--no-color)
     local o="+"         # output file name when action is `-J|--json' (default: '+', i.e. generate a name; '+SUFFIX' means appending '.SUFFIX' to the generated name) (--output-file=STR)
     local p="+"         # resource's pages specifier: '-' means the first page only, '+NUM' means first NUM >= 1 pages only, '+' means all pages and '@TOKEN' means the page identified by TOKEN (default: '+') (--page=SPEC)
     local q=""          # be quiet: when action is `-J|--json' do not print out the output file name (--quiet)
@@ -1274,9 +1274,22 @@ youtube-data()
                         error --long -d
                         return 1
                     }
-                elif [[ "$OPTARG" != $colx ]]; then
-                    error --long -i
-                    return 1
+                else
+                    [ -z "$OPT" -o -n "$OPTN" ] || {
+                        error --long -a
+                        return 1
+                    }
+                    [[ -z "$OPT" &&
+                        "$OPTARG" == @([-+]|++) ||
+                        "$OPTARG" == $alux ]] || {
+                        error --long -i
+                        return 1
+                    }
+                    case "$OPTARG" in
+                        -)	OPTARG='' ;;
+                        +)	OPTARG='auto' ;;
+                        !)	OPTARG='always' ;;
+                    esac
                 fi
                 optarg
                 ;;
