@@ -209,6 +209,10 @@
                                     {
                                         "name": "liveBroadcastContent",
                                         "type": "string"
+                                    },
+                                    {
+                                        "name": "publishTime",
+                                        "type": "string"
                                     }
                                 ],
                                 "expr": "publishedAt|title|description"
