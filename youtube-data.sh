@@ -824,7 +824,7 @@ youtube-data()
         'channelId publishedAt duration title description'
         # [3] search channel playlists:
         'playlistId publishedAt title description'
-        # [4] search channel videos or playlist items:
+        # [4] search channel videos or list playlist items:
         'videoId publishedAt title description'
     )
     local yprl='channel-id playlist-id video-id published-at duration title description'
