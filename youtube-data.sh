@@ -812,6 +812,9 @@ youtube-data()
     local self="youtube-data"
     local wget="$YOUTUBE_WGET"
     local tmpf="/tmp/$self.XXX"
+    local lnke='/^([ \t]*)([^ \t]*)([ \t]*)$/'
+    local lnku='https://www.youtube.com/watch?v=%s'
+    local lnkf='\x1b]8;;'"$lnku"'\x1b\\%s\x1b]8;;\x1b\\'
     local yurl='https://www.googleapis.com/youtube/v3/'
     local yitm='/items'
     local ypth='snippet'
@@ -921,6 +924,7 @@ youtube-data()
     local v=""          # do not validate resource's parameter values or otherwise do (default do) (--[no-]validate)
     local w=""          # wrap 'title' and 'description' texts when output is of type 'list' or otherwise do not (default: do not for `-P' and do for `-V'; NUM must be >= 13; its default value is 72) (--wrap[-text][=NUM]|--no-wrap[-text])
     local y="+"         # Google API application key (default: '+', i.e. $YOUTUBE_DATA_APP_KEY) (--[app-]key=STR)
+    local z="auto"      # produce hyperlinks on output as specified, or otherwise do not; the short option `-z' accepts shortcut arguments too: '-', '+' and '!' for `--no-hyperlinks', `-z auto' and `-z always' respectively (default: 'auto', i.e. have hyperlinks only if stdout is a terminal) (--hyperlinks=always|auto|--no-hyperlinks)
 
     local arg='+=+'     # action argument (default for default action '-P')
     local r2='i'        # last option setting $i: 'i' or 'r'
@@ -930,7 +934,7 @@ youtube-data()
     local opt
     local OPT
     local OPTN
-    local opts=":a:bc:dD:e:gh:Hi:IJk:l:m:n:o:p:P:qr:s:Stu:UvV:wxy:-:"
+    local opts=":a:bc:dD:e:gh:Hi:IJk:l:m:n:o:p:P:qr:s:Stu:UvV:wxy:z:-:"
     local OPTARG
     local OPTERR=0
     local OPTIND=1
@@ -997,13 +1001,15 @@ youtube-data()
                 opt='w' ;;
             key|app-key)
                 opt='y' ;;
+            hyperlinks|no-hyperlinks)
+                opt='z' ;;
             *)	error --long -o
                 return 1
                 ;;
         esac
 
         # check long option argument
-        [[ "$opt" == [bcDilnPrVw] ]] ||
+        [[ "$opt" == [bcDilnPrVwz] ]] ||
         optlongchkarg ||
         return 1
 
@@ -1269,7 +1275,8 @@ youtube-data()
                 }
                 optarg
                 ;;
-            n)	if [ "${OPT:0:2}" == 'no' ]; then
+            [nz])
+                if [ "${OPT:0:2}" == 'no' ]; then
                     [ -z "$OPTN" ] || {
                         error --long -d
                         return 1
@@ -1622,6 +1629,11 @@ youtube-data()
         return 1
     }
 
+    local z2="$z"
+    # stev: reset $z2 when is 'auto' and
+    # stdout is not opened on a terminal
+    [ "$z2" == 'auto' -a ! -t 1 ] && z2=''
+
     [ "$act" == 'D' ] && {
         [ -z "$V2" ] && {
             c0+=" --json2 --$r --$l -p"
@@ -1707,6 +1719,10 @@ $c0 --$r=$i2 --$l2 --hash -p$p -c$c"
             [ -n "$b2" ] &&
             o2+=" --relative-date=$b2" ||
             o2+=' --no-relative-date'
+
+            [ -n "$z2" ] &&
+            o2+=" --hyperlinks=always" ||
+            o2+=' --no-hyperlinks'
 
             local j
             local c3=''
@@ -2420,6 +2436,10 @@ sed -ru '
                     M['"$title"'] = 1'
             [ -n "$description" ] && s3+='
                     M['"$description"'] = 1'
+            [ "$arg" == 'list' -a -n "$z2" -a -n "$video_id" ] && s3+='
+
+                    # hyperlinks format
+                    F = "'"$lnkf"'"'
             s3+='
                 }
 
@@ -2483,6 +2503,15 @@ sed -ru '
 
                 function format_date(p, v)
                 { return make_relative(parse_date(p, v)) }'
+            [ "$arg" == 'list' -a -n "$z2" -a -n "$video_id" ] && s3+='
+
+                function format_link(v, a)
+                {
+                    if (match(v, '"$lnke"', a))
+                        return a[1] sprintf(F, a[2], a[2]) a[3]
+                    else
+                        return sprintf(F, v, v)
+                }'
             [ "$arg" == 'list' -a -n "$w" ] && s3+='
 
                 function format_text(p, v,	s, w, l, r, k)
@@ -2627,6 +2656,11 @@ sed -ru '
             [ -z "$v" ] && s3+='
                     if (R[i] && !match(v, R[i]))
                         invalid_value(i, v)'
+            [ "$arg" == 'list' -a -n "$z2" -a -n "$video_id" ] && s3+='
+
+                    # stev: format "videoId"
+                    if (i == '"$video_id"')
+                        v = format_link(v)'
             [ -n "$b" -a -n "$published_at" ] && s3+='
 
                     # stev: format "publishedAt"
@@ -2670,7 +2704,10 @@ sed -ru '
             s4='
                 BEGIN {
                     OFS = FS
-                    N = 0
+                    N = 0'
+            [ -n "$z2" -a -n "$video_id" ] && s4+='
+                    F = "%s'"$lnkf"'%s"'
+            s4+='
                 }
                 function record_line(	i, l)
                 {
@@ -2681,11 +2718,20 @@ sed -ru '
                     }
                     L[N ++] = $0
                 }
-                function print_table(	i, j, n, T)
+                function print_table(	i, j, n, T'"${z2:+, s, a}"')
                 {
                     for (i = 0; i < N; i ++) {
-                        n = split(L[i], T)
-                        for (j = 1; j < n; j ++)
+                        n = split(L[i], T)'
+            [ -z "$z2" -o -z "$video_id" ] && s4+='
+                        for (j = 1; j < n; j ++)'
+            [ -n "$z2" -a -n "$video_id" ] && s4+='
+                        s = sprintf("%-*s  ", W[1], T[1])
+                        if (match(s, '"$lnke"', a))
+                            printf(F, a[1], a[2], a[2], a[3])
+                        else
+                            printf(F, "", s, s, "")
+                        for (j = 2; j < n; j ++)'
+            s4+='
                             printf("%-*s  ", W[j], T[j])
                         if (n > 0)
                             printf("%s\n", T[n])
@@ -2931,6 +2977,12 @@ $c0 --$r --$l --file=- --"
             [ -n "$n" ] && {
                 c2+=" --color=$n"
             }
+            if [ -z "$z" ]; then
+                c2+=' --no-hyperlinks'
+            elif [ "$z" != 'auto' ]; then
+                # stev: $z is 'auto' by default
+                c2+=" --hyperlinks=$z"
+            fi
         else
             error "internal: unexpected arg='$arg'"
             return 1
