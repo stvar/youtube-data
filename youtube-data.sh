@@ -1362,8 +1362,8 @@ youtube-data()
                 elif [[ -n "$OPT" && "$OPTARG" != @(\+|+([0-9])) ]]; then
                     error --long -i
                     return 1
-                elif [ -z "$OPT" -a "$OPTARG" != '+' ] && [[ "$OPTARG" -lt "$minw" ]]; then
-                    error "the argument of \`-w|--text-wrap' must be at least $minw"
+                elif [ -n "$OPT" -a "$OPTARG" != '+' ] && [[ "$OPTARG" -lt "$minw" ]]; then
+                    error "the argument of \`--wrap-text' must be at least $minw"
                     return 1
                 fi
                 optarg
