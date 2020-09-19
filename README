@@ -693,13 +693,6 @@ action option was last specified in the invoking command line; 'youtube-data'
 reads input from stdin or named files only when issued with options `--file'
 or `--diff'.
 
-A caveat using the command line options `--*-uploads': the API's 'playlist-items'
-endpoint provides a 'publishedAt' property [6] to each video item returned, but
-the video item list returned is ordered by the upload time of each item. Hence,
-it may very much happen that the output these options produce to not be ordered
-by published time: by [6], the upload time and the published time properties of
-a video have different meaning (therefore may well have different values).
-
 Shell function 'youtube-data's most important helper is 'youtube-wget' -- also
 a shell function defined in 'youtube-data.sh'. The user need not use this latter
 function at all. Nevertheless, if one wants to hack around the behavior of shell
@@ -781,8 +774,5 @@ for to achieve its duties.
 
 [5] GnuPG FAQ: How can I use GnuPG to verify a file I've downloaded?
     https://www.gnupg.org/faq/gnupg-faq.html#how_do_i_verify_signed_packages
-
-[6] YouTube Data API > Videos > Properties > snippet.publishedAt
-    https://developers.google.com/youtube/v3/docs/videos#snippet.publishedAt
 
 
