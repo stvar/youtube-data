@@ -243,7 +243,8 @@
                                         "name": "videoPublishedAt",
                                         "type": "string"
                                     }
-                                ]
+                                ],
+                                "expr": "videoPublishedAt"
                             }
                         },
                         {
