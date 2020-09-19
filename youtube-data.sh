@@ -816,6 +816,7 @@ youtube-data()
     local lnku='https://www.youtube.com/watch?v=%s'
     local lnkf='\x1b]8;;'"$lnku"'\x1b\\%s\x1b]8;;\x1b\\'
     local yurl='https://www.googleapis.com/youtube/v3/'
+    local ypub='^.*\b((videoP|p)ublishedAt)\b.*$'
     local yitm='/items'
     local ypth='snippet'
     local ypar=(
@@ -827,8 +828,10 @@ youtube-data()
         'channelId publishedAt duration title description'
         # [3] search channel playlists:
         'playlistId publishedAt title description'
-        # [4] search channel videos or list playlist items:
+        # [4] search channel videos:
         'videoId publishedAt title description'
+        # [5] list playlist items:
+        'videoId videoPublishedAt title description'
     )
     local yprl='channel-id playlist-id video-id published-at duration title description'
     local yprx="@(${yprl// /|})"
@@ -840,7 +843,7 @@ youtube-data()
         # [2] search channel videos:
         'id/videoId'
         # [3] playlist items:
-        'snippet/resourceId/videoId'
+        'snippet/resourceId/videoId contentDetails/videoPublishedAt'
     )
     local yprt=(
         # [0] channel itself:
@@ -1843,13 +1846,21 @@ sed -ru '
                 j=2 ;;
             channel:playlists)
                 j=3 ;;
-            channel:@(videos|uploads)|playlist:videos)
+            channel:videos)
                 j=4 ;;
+            channel:uploads|playlist:videos)
+                j=5 ;;
             *)	error "internal: unexpected r='$r' and l='$l' [0]"
                 return 1
                 ;;
         esac
         P="${ypar[$j]}"
+
+        [[ "$P" =~ $ypub ]] || {
+            error "internal: missing publishedAt property"
+            return 1
+        }
+        local N="${BASH_REMATCH[1]}"
 
         #!!! echo >&2 "!!! arg='$arg'"
 
@@ -2306,8 +2317,12 @@ sed -ru '
                         next
                     }
                     if (length($0) == 6)
-                        print_group()
-                    if (starts_with($0, "/items/snippet/publishedAt="))
+                        print_group()'
+            [ "$N" == 'publishedAt' ] && s2+='
+                    if (starts_with($0, "/items/snippet/publishedAt="))'
+            [ "$N" == 'videoPublishedAt' ] && s2+='
+                    if (starts_with($0, "/items/contentDetails/videoPublishedAt="))'
+            s2+='
                         D = substr($0, 28)
                     G = G ? G "\001" $0 : $0
                 }
@@ -2339,7 +2354,7 @@ sed -ru '
                         video_id="$k2" ;;
                     playlistId)
                         playlist_id="$k2" ;;
-                    publishedAt)
+                    publishedAt|videoPublishedAt)
                         published_at="$k2" ;;
                     description)
                         description="$k2" ;;
@@ -2663,7 +2678,7 @@ sed -ru '
                         v = format_link(v)'
             [ -n "$b" -a -n "$published_at" ] && s3+='
 
-                    # stev: format "publishedAt"
+                    # stev: format "'"$N"'"
                     if (i == '"$published_at"')
                         v = format_date(i, v)'
             [ "$arg" == 'list' -a -n "$w" ] && s3+='
