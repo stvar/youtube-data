@@ -2853,8 +2853,6 @@ tr '\001' '\n'|
 uniq"
         [ -n "$s3" ] && c2+="|
 awk -F '\n' --re-interval '$s3'"
-        [ -n "$s3" -a -z "$b" -a -n "$published_at" ] && c2+="|
-sort -t $'\t' -k${published_at}r,$published_at -s"
         [ -n "$s4" ] && c2+="|
 awk -F '\t' '$s4'"
     elif [[ "$act" == [HIJU] && "$i" == 'id' && "${p:0:1}" == '+' ]]; then
