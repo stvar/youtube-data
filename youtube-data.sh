@@ -816,7 +816,6 @@ youtube-data()
     local lnku='https://www.youtube.com/watch?v=%s'
     local lnkf='\x1b]8;;'"$lnku"'\x1b\\%s\x1b]8;;\x1b\\'
     local yurl='https://www.googleapis.com/youtube/v3/'
-    local ypub='^.*\b((videoP|p)ublishedAt)\b.*$'
     local yitm='/items'
     local ypth='snippet'
     local ypar=(
@@ -828,10 +827,8 @@ youtube-data()
         'channelId publishedAt duration title description'
         # [3] search channel playlists:
         'playlistId publishedAt title description'
-        # [4] search channel videos:
+        # [4] search channel videos or list playlist items:
         'videoId publishedAt title description'
-        # [5] list playlist items:
-        'videoId videoPublishedAt title description'
     )
     local yprl='channel-id playlist-id video-id published-at duration title description'
     local yprx="@(${yprl// /|})"
@@ -1836,6 +1833,9 @@ sed -ru '
             p='-'
         }
 
+        # stev: default published-at property name
+        local N='publishedAt'
+
         local j
         case "$r:$l" in
             channel:itself)
@@ -1849,18 +1849,13 @@ sed -ru '
             channel:videos)
                 j=4 ;;
             channel:uploads|playlist:videos)
-                j=5 ;;
+                N='videoPublishedAt'
+                j=4 ;;
             *)	error "internal: unexpected r='$r' and l='$l' [0]"
                 return 1
                 ;;
         esac
         P="${ypar[$j]}"
-
-        [[ "$P" =~ $ypub ]] || {
-            error "internal: missing publishedAt property"
-            return 1
-        }
-        local N="${BASH_REMATCH[1]}"
 
         #!!! echo >&2 "!!! arg='$arg'"
 
@@ -2354,7 +2349,7 @@ sed -ru '
                         video_id="$k2" ;;
                     playlistId)
                         playlist_id="$k2" ;;
-                    publishedAt|videoPublishedAt)
+                    publishedAt)
                         published_at="$k2" ;;
                     description)
                         description="$k2" ;;
@@ -2383,6 +2378,7 @@ sed -ru '
                     # parameter table'
 
             local n3
+            local n4
             local p2
             local k3=''
             case "$r:$l" in
@@ -2401,7 +2397,11 @@ sed -ru '
                 p2="$ypth/"
                 [ -n "$k3" ] &&
                 for n3 in ${ypex[$k3]}; do # stev: do not quote $ypex
-                    [ "$n2" == "${n3##*/}" ] && {
+                    n4="${n3##*/}"
+                    [ "$n2" == 'publishedAt' -a "$N" == "$n4" ] && {
+                        n2="$n4"
+                    }
+                    [ "$n2" == "$n4" ] && {
                         p2="${n3%/*}/"
                         break
                     }
