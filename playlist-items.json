@@ -190,6 +190,14 @@
                                         "type": "string"
                                     },
                                     {
+                                        "name": "videoOwnerChannelTitle",
+                                        "type": "string"
+                                    },
+                                    {
+                                        "name": "videoOwnerChannelId",
+                                        "type": "string"
+                                    },
+                                    {
                                         "name": "playlistId",
                                         "type": "string"
                                     },
