@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2018, 2019, 2020  Stefan Vargyas
+# Copyright (C) 2018, 2019, 2020, 2021  Stefan Vargyas
 # 
 # This file is part of Youtube-Data.
 # 
