@@ -985,6 +985,8 @@ youtube-data()
                 opt='q' ;;
             $resx)
                 opt='r' ;;
+            shortcuts)
+                opt='s' ;;
             json2)
                 opt='S' ;;
             type|no-type|json-type|no-json-type)
@@ -1025,7 +1027,7 @@ youtube-data()
             [gqtv])
                 optopt
                 ;;
-            [ahkoy])
+            [ahkosy])
                 optarg
                 ;;
             D)	[[ -n "$OPT" && -z "$OPTN" && -z "$OPTARG" ]] && {
