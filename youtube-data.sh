@@ -1513,7 +1513,7 @@ youtube-data()
             i4=''
             case "${i3:0:2}" in
                 UC) [ "$r" == 'channel' ]  || i4='channel' ;;
-                [OP]L)
+                [OP]L|RD)
                     [ "$r" == 'playlist' ] || i4='playlist' ;;
             esac
             [ -n "$i4" ] && {
@@ -1523,7 +1523,7 @@ youtube-data()
         else
             case "${i3:0:2}" in
                 UC) r='channel' ;;
-                [OP]L)
+                [OP]L|RD)
                     r='playlist' ;;
             esac
         fi
