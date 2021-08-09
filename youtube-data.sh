@@ -768,7 +768,7 @@ cd $h.cache &&"$'\n'
 $wget \\
 --$q \\${wget_debug:+
 --debug \\}${wget_no_check_certif:+
---no-check-certificate \\}${wget_user_agent:+
+--no-check-certif \\}${wget_user_agent:+
 --user-agent='$wget_user_agent' \\}${wget_header:+
 --header='$wget_header' \\}${wget_connect_timeout:+
 --connect-timeout=$wget_connect_timeout \\}"
@@ -907,6 +907,7 @@ youtube-data()
     local b="+"         # produce relative dates on output or otherwise do not; when given NUM, compute dates relative to NUM as number of seconds since the Epoch (default: do for `-I' or else do not) (--relative-date[=NUM]|--no-relative-date)
     local c="+"         # use resource's locally cached files according to the given specifier or, otherwise, do not use the cache at all, but query the remote party for content; SPEC is any of 'previous', 'local', 'current', 'auto' (default) or 'refresh'; 'previous' means using resource's previous version locally cached file; 'local' means using resource's locally cached file -- in any case do not call the remote party; 'current' means using resource's current version locally cached file if that file exists already -- if not, get it from the remote party; 'auto' means using resource's locally cached file if and only if the respective file has not yet reached its aging threshold; each aged cache file is refreshed the first time its associated resource is requested; 'refresh' makes each cached file to be refreshed prior to using it further regardless of it not exceeding its aging threshold yet; the aging threshold is specified by $YOUTUBE_DATA_CACHE_THRESHOLD (which is of form '[0-9]+[dhms]?'); the short option `-c' accepts shortcut arguments too: '-', '~', '#', '=', '+' and '!' for `--no-cache', `-c previous', `-c local', `-c current', `-c auto' and `-c refresh' respectively (--cache=SPEC|--no-cache)
     local e="-"         # output mode if output file already exists: 'error', 'append' or 'overwrite' with corresponding shortcuts '-', '+' and '=' (default: '-' i.e. 'error') (--output-mode=MODE)
+    local f=""          # pass `--no-check-certif' to 'wget' or otherwise do not (default not) (--[no-]check-certif)
     local g=""          # pass `--debug' to 'wget' (--debug)
     local h="+"         # home dir (default: '+', i.e. $YOUTUBE_DATA_HOME) (--home=DIR)
     local i="+"         # input type -- 'file' or 'id' -- and input name (the default type is 'id') (--file[=FILE]|--id[=ID])
@@ -934,7 +935,7 @@ youtube-data()
     local opt
     local OPT
     local OPTN
-    local opts=":a:bc:dD:e:gh:Hi:IJk:l:m:n:o:p:P:qr:s:Stu:UvV:wxy:z:-:"
+    local opts=":a:bc:dD:e:fgh:Hi:IJk:l:m:n:o:p:P:qr:s:Stu:UvV:wxy:z:-:"
     local OPTARG
     local OPTERR=0
     local OPTIND=1
@@ -955,6 +956,8 @@ youtube-data()
                 opt='D' ;;
             output-mode)
                 opt='e' ;;
+            check-certif|no-check-certif)
+                opt='f' ;;
             debug)
                 opt='g' ;;
             home)
@@ -1367,7 +1370,7 @@ youtube-data()
                 }
                 optarg
                 ;;
-            [tv])
+            [ftv])
                 if [ -z "$OPT" -o "${OPT:0:2}" == 'no' ]; then
                     eval $opt="$opt"
                 else
@@ -1600,8 +1603,8 @@ youtube-data()
             c0+=" --${n2:2}=$v2"
         done
         # stev: bool params (defaulted with '')
-        for n2 in t:no-type v:no-validate; do
-            assign2 v2 ${n2:0:1} # stev: using $t and $v
+        for n2 in f:no-check-certif t:no-type v:no-validate; do
+            assign2 v2 ${n2:0:1} # stev: using $f, $t and $v
             [ -n "$v2" ] &&
             c0+=" --${n2:2}"
         done
@@ -2800,8 +2803,8 @@ youtube-wget \\"
             [[ "$act" != 'I' && "$c" == '-' ]] && c2+="
 --quiet \\"
             [[ "$act" != 'I' ]] && c2+="${g:+
---debug \\}
---no-check-certif \\"
+--debug \\}${f:+
+--no-check-certif \\}"
             [[ "$act" != [HI] ]] && c2+="
 --output-document=$o \\"
             [[ "$act" != 'I' && "$c" == '-' ]] && c2+="
