@@ -625,6 +625,8 @@ This function is a rich-featured tool, having quite a few command line options:
                                     'append' or 'overwrite' with corresponding
                                     shortcuts '-', '+' and '=' (default: '-' i.e.
                                     'error')
+    -f|--[no-]check-certif        pass `--no-check-certif' to 'wget' or otherwise do
+                                    not (default not)
     -g|--debug                    pass `--debug' to 'wget'
     -h|--home=DIR                 home dir (default: '+', i.e. $YOUTUBE_DATA_HOME)
     -i:|--file[=FILE]             input type -- 'file' or 'id' -- and input name (the
