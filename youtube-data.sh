@@ -1024,7 +1024,7 @@ youtube-data()
             [HIJNSU])
                 optactarg
                 ;;
-            [gqtv])
+            [gq])
                 optopt
                 ;;
             [ahkosy])
@@ -1367,8 +1367,8 @@ youtube-data()
                 }
                 optarg
                 ;;
-            [vt])
-                if [ "${OPT:0:2}" != 'no' ]; then
+            [tv])
+                if [ -z "$OPT" -o "${OPT:0:2}" == 'no' ]; then
                     eval $opt="$opt"
                 else
                     eval $opt=''
